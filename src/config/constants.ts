@@ -28,3 +28,12 @@ export const SOCIAL_LINKS = {
   tiktok: "https://www.tiktok.com/@TwojProfil",
   youtube: "https://www.youtube.com/@TwojKanal",
 };
+
+export const CONTACT_INFO = {
+  phone1: "+48 504 056 342",
+  phone1Clean: "48504056342", // numer bez spacji do linków tel:
+  phone2: "+48 690 080 708",
+  phone2Clean: "48690080708",
+  email: "kontakt@natryskujemy.pl",
+  address: "ul. Legionów 37C, 42-600 Tarnowskie Góry"
+};
