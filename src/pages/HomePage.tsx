@@ -78,8 +78,14 @@ export default function HomePage() {
 
       {/* Sekcja Hero */}
       <section className="relative bg-slate-900 overflow-hidden min-h-[80vh] flex items-center">
-        <video 
-          autoPlay loop muted playsInline preload="none"
+		<video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          preload="auto" /* Zmiana 1: Pozwalamy przeglądarce ładować wideo od razu */
+          fetchPriority="high" /* Zmiana 2: Mówimy Google "Ładuj to jako absolutny priorytet!" */
+          aria-hidden="true" /* Zmiana 3: Ukrywamy przed czytnikami dla osób niewidomych (bo to tylko tło) */
           className="absolute inset-0 w-full h-full object-cover z-0"
           poster={posterImage}
         >

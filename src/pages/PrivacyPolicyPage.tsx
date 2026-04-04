@@ -13,10 +13,10 @@ export default function PrivacyPolicyPage() {
         <div className="bg-white p-8 md:p-12 rounded-3xl shadow-md border border-slate-100 prose prose-slate max-w-none text-slate-600">
           <p className="lead text-lg font-medium text-slate-700">Niniejsza polityka prywatności określa zasady przetwarzania i ochrony danych osobowych przekazanych przez Użytkowników w związku z korzystaniem z usług poprzez serwis natryskujemy.pl.</p>
           
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">1. Administrator Danych Osobowych</h3>
+          <h2 className="text-xl font-bold text-slate-800 mt-8 mb-4">1. Administrator Danych Osobowych</h2>
           <p>Administratorem danych osobowych zawartych w serwisie jest firma <strong>HydroPAKiet</strong> z siedzibą: {CONTACT_INFO.address1}, {CONTACT_INFO.address2}.</p>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">2. Cel zbierania danych</h3>
+          <h2 className="text-xl font-bold text-slate-800 mt-8 mb-4">2. Cel zbierania danych</h2>
           <p>Dane osobowe (takie jak: imię, nazwisko, adres e-mail, numer telefonu) podawane w formularzach kontaktowych są przetwarzane wyłącznie w celu:</p>
           <ul className="list-disc pl-5 space-y-2 mb-4">
             <li>Odpowiedzi na przesłane zapytania przez formularz kontaktowy.</li>
@@ -24,13 +24,13 @@ export default function PrivacyPolicyPage() {
             <li>Realizacji i obsługi ewentualnej umowy.</li>
           </ul>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">3. Ochrona i udostępnianie</h3>
+          <h2 className="text-xl font-bold text-slate-800 mt-8 mb-4">3. Ochrona i udostępnianie</h2>
           <p>Szanujemy Twoją prywatność. Dane osobowe pozostawione w serwisie są odpowiednio zabezpieczone i nie zostaną sprzedane ani udostępnione osobom trzecim bez Twojej zgody, zgodnie z przepisami Rozporządzenia o Ochronie Danych Osobowych (RODO).</p>
 
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">4. Twoje prawa</h3>
+          <h2 className="text-xl font-bold text-slate-800 mt-8 mb-4">4. Twoje prawa</h2>
           <p>Do danych zawartych w formularzu przysługuje wgląd osobie fizycznej, która je tam umieściła. Osoba ta ma również prawo do ich sprostowania, usunięcia (tzw. "prawo do bycia zapomnianym"), ograniczenia przetwarzania oraz przenoszenia danych, kontaktując się z Administratorem pod adresem: <strong><a href={`mailto:${CONTACT_INFO.email}`} className="text-[#3f8ace] hover:underline">{CONTACT_INFO.email}</a></strong>.</p>
           
-          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">5. Pliki Cookies (Ciasteczka)</h3>
+          <h2 className="text-xl font-bold text-slate-800 mt-8 mb-4">5. Pliki Cookies (Ciasteczka)</h2>
           <p>Nasz serwis zbiera w sposób automatyczny informacje zawarte w plikach cookies. Są one wykorzystywane wyłącznie do zapewnienia prawidłowego działania strony oraz w podstawowych celach analitycznych, pomagając nam zrozumieć, jak Użytkownicy korzystają z serwisu.</p>
         </div>
       </div>
