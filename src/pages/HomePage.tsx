@@ -250,8 +250,10 @@ export default function HomePage() {
                             <input type="text" id="name" required minLength={3} className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3f8ace] focus:ring-2 focus:ring-[#3f8ace]/20 outline-none transition-all disabled:bg-slate-50" placeholder="Jan Kowalski" disabled={formStatus === 'submitting'} />
                         </div>
                         <div>
-                            <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-2">Numer telefonu</label>
-                            <input type="tel" id="phone" required pattern="[0-9\-\+ ]{9,15}" title="Podaj prawidłowy numer telefonu" className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3f8ace] focus:ring-2 focus:ring-[#3f8ace]/20 outline-none transition-all disabled:bg-slate-50" placeholder="+48 000 000 000" disabled={formStatus === 'submitting'} />
+ <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-2">
+  Numer telefonu <span className="text-slate-400 font-normal text-xs ml-1">(opcjonalnie)</span>
+</label>
+                            <input type="tel" id="phone" pattern="[0-9\-\+ ]{9,15}" title="Podaj prawidłowy numer telefonu" className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-[#3f8ace] focus:ring-2 focus:ring-[#3f8ace]/20 outline-none transition-all disabled:bg-slate-50" placeholder="+48 000 000 000" disabled={formStatus === 'submitting'} />
                         </div>
                     </div>
                     <div>
