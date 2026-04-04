@@ -8,7 +8,7 @@ import { faqsData, opinionsData } from '../data';
 import { FAQItem } from '../components/FAQItem';
 import { ServiceCard1, ServiceCard2, ServiceCard3 } from '../components/ServiceCards';
 import { Facebook, Instagram, TikTokIcon, Youtube } from '../components/Icons';
-import { SOCIAL_LINKS } from '../config/constants';
+import { SOCIAL_LINKS, CONTACT_INFO } from '../config/constants';
 import hydroDachu from '../assets/hydroizolacja-dachu.webp';
 
 export default function HomePage() {
@@ -49,10 +49,11 @@ export default function HomePage() {
             "@type": "LocalBusiness",
             "name": "natryskujemy.pl (HydroPAKiet)",
             "image": "https://images.unsplash.com/photo-1621648057993-9c59577c3857?auto=format&fit=crop&q=80&w=800",
-            "telephone": "+48 500 000 000",
+            "telephone": "+48 504 056 342",
+			"telephone": "+48 690 080 708",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "ul. Legionów 37C",
+              "streetAddress": "ul. Legionów 37c",
               "addressLocality": "Tarnowskie Góry",
               "postalCode": "42-600",
               "addressCountry": "PL"
@@ -281,47 +282,54 @@ export default function HomePage() {
             <div className="lg:w-2/5 bg-slate-50 rounded-2xl p-8 border border-slate-100 flex flex-col justify-center">
                 <h3 className="text-xl font-bold text-slate-900 mb-8">Bezpośredni kontakt</h3>
                 <div className="space-y-8">
-                    <div className="flex items-start">
-                        <div className="w-12 h-12 bg-[#3f8ace]/10 rounded-full flex items-center justify-center text-[#3f8ace] mr-4 flex-shrink-0">
-                            <PhoneCall size={24} />
-                        </div>
-                        <div>
-                            <div className="text-sm font-medium text-slate-500 mb-1">Doradztwo techniczne i wyceny</div>
-                            <div className="flex flex-col space-y-2">
-                                <a href="tel:+48500000000" className="text-2xl font-bold text-slate-900 hover:text-[#3f8ace] transition-colors">+48 500 000 000</a>
-                                <a href="tel:+48600000000" className="text-2xl font-bold text-slate-900 hover:text-[#3f8ace] transition-colors">+48 600 000 000</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex items-start">
-                        <div className="w-12 h-12 bg-[#3f8ace]/10 rounded-full flex items-center justify-center text-[#3f8ace] mr-4 flex-shrink-0">
-                            <Mail size={24} />
-                        </div>
-                        <div>
-                            <div className="text-sm font-medium text-slate-500 mb-1">Adres e-mail</div>
-                            <a href="mailto:kontakt@natryskujemy.pl" className="text-lg font-bold text-slate-900 hover:text-[#3f8ace] transition-colors">kontakt@natryskujemy.pl</a>
-                        </div>
-                    </div>
-                    <div className="flex items-start">
-                        <div className="w-12 h-12 bg-[#3f8ace]/10 rounded-full flex items-center justify-center text-[#3f8ace] mr-4 flex-shrink-0">
-                            <MapPin size={24} />
-                        </div>
-                        <div>
-                            <div className="text-sm font-medium text-slate-500 mb-1">Siedziba firmy</div>
-                            <div className="text-lg font-bold text-slate-900">ul. Legionów 37C</div>
-                            <div className="text-slate-600">42-600 Tarnowskie Góry</div>
-                        </div>
-                    </div>
-                    <div className="pt-6 border-t border-slate-200 mt-4">
-                        <div className="text-sm font-medium text-slate-500 mb-4">Znajdź nas w sieci</div>
-                        <div className="flex space-x-4">
-                            <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-[#1877F2] hover:text-white hover:shadow-lg hover:shadow-[#1877F2]/30 transition-all transform hover:-translate-y-1" title="Facebook"><Facebook size={22} /></a>
-                            <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white hover:shadow-lg hover:shadow-[#dc2743]/30 transition-all transform hover:-translate-y-1" title="Instagram"><Instagram size={22} /></a>
-                            <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-black hover:text-white hover:shadow-lg transition-all transform hover:-translate-y-1" title="TikTok"><TikTokIcon size={22} /></a>
-                            <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-[#FF0000] hover:text-white hover:shadow-lg hover:shadow-[#FF0000]/30 transition-all transform hover:-translate-y-1" title="YouTube"><Youtube size={22} /></a>
-                        </div>
-                    </div>
-                </div>
+    <div className="flex items-start">
+        <div className="w-12 h-12 bg-[#3f8ace]/10 rounded-full flex items-center justify-center text-[#3f8ace] mr-4 flex-shrink-0">
+            <PhoneCall size={24} />
+        </div>
+        <div>
+            <div className="text-sm font-medium text-slate-500 mb-1">Doradztwo techniczne i wyceny</div>
+            <div className="flex flex-col space-y-2">
+                {/* ZMIANA: Telefony */}
+                <a href={`tel:+${CONTACT_INFO.phone1Clean}`} className="text-2xl font-bold text-slate-900 hover:text-[#3f8ace] transition-colors">{CONTACT_INFO.phone1}</a>
+                <a href={`tel:+${CONTACT_INFO.phone2Clean}`} className="text-2xl font-bold text-slate-900 hover:text-[#3f8ace] transition-colors">{CONTACT_INFO.phone2}</a>
+            </div>
+        </div>
+    </div>
+    
+    <div className="flex items-start">
+        <div className="w-12 h-12 bg-[#3f8ace]/10 rounded-full flex items-center justify-center text-[#3f8ace] mr-4 flex-shrink-0">
+            <Mail size={24} />
+        </div>
+        <div>
+            <div className="text-sm font-medium text-slate-500 mb-1">Adres e-mail</div>
+            {/* ZMIANA: Email */}
+            <a href={`mailto:${CONTACT_INFO.email}`} className="text-lg font-bold text-slate-900 hover:text-[#3f8ace] transition-colors">{CONTACT_INFO.email}</a>
+        </div>
+    </div>
+    
+    <div className="flex items-start">
+        <div className="w-12 h-12 bg-[#3f8ace]/10 rounded-full flex items-center justify-center text-[#3f8ace] mr-4 flex-shrink-0">
+            <MapPin size={24} />
+        </div>
+        <div>
+            <div className="text-sm font-medium text-slate-500 mb-1">Siedziba firmy</div>
+            {/* ZMIANA: Adres */}
+            <div className="text-lg font-bold text-slate-900">{CONTACT_INFO.address1}</div>
+            <div className="text-lg font-bold text-slate-900">{CONTACT_INFO.address2}</div>
+        </div>
+    </div>
+    
+    <div className="pt-6 border-t border-slate-200 mt-4">
+        <div className="text-sm font-medium text-slate-500 mb-4">Znajdź nas w sieci</div>
+        <div className="flex space-x-4">
+            {/* Tutaj bez zmian - już masz dobrze ustawione SOCIAL_LINKS */}
+            <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-[#1877F2] hover:text-white hover:shadow-lg hover:shadow-[#1877F2]/30 transition-all transform hover:-translate-y-1" title="Facebook"><Facebook size={22} /></a>
+            <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white hover:shadow-lg hover:shadow-[#dc2743]/30 transition-all transform hover:-translate-y-1" title="Instagram"><Instagram size={22} /></a>
+            <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-black hover:text-white hover:shadow-lg transition-all transform hover:-translate-y-1" title="TikTok"><TikTokIcon size={22} /></a>
+            <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-[#FF0000] hover:text-white hover:shadow-lg hover:shadow-[#FF0000]/30 transition-all transform hover:-translate-y-1" title="YouTube"><Youtube size={22} /></a>
+        </div>
+    </div>
+</div>
             </div>
           </div>
         </div>

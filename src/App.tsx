@@ -6,7 +6,7 @@ import {
 // Konteksty i ikony
 import { AppProvider, useAppContext, throttle } from './context/AppContext';
 import { Facebook, Instagram, TikTokIcon, Youtube } from './components/Icons';
-import { TIMEOUTS, UI_CONFIG, SOCIAL_LINKS } from './config/constants';
+import { TIMEOUTS, UI_CONFIG, SOCIAL_LINKS, CONTACT_INFO } from './config/constants';
 import logoFirmy from './assets/natryskujemy.webp';
 
 // Komponent Error Boundary
@@ -85,15 +85,15 @@ const AppContent = () => {
       <div className="bg-slate-900 text-slate-300 py-2 px-4 text-sm hidden lg:block">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex space-x-6">
-            <a href="tel:+48500000000" className="flex items-center hover:text-white transition-colors">
-              <PhoneCall size={16} className="mr-2 text-[#3f8ace]" /> +48 500 000 000
+            <a href={`tel:+${CONTACT_INFO.phone1Clean}`} className="flex items-center hover:text-white transition-colors">
+              <PhoneCall size={16} className="mr-2 text-[#3f8ace]" /> {CONTACT_INFO.phone1}
             </a>
-            <a href="tel:+48600000000" className="flex items-center hover:text-white transition-colors">
-              <PhoneCall size={16} className="mr-2 text-[#3f8ace]" /> +48 600 000 000
+            <a href={`tel:+${CONTACT_INFO.phone2Clean}`} className="flex items-center hover:text-white transition-colors">
+              <PhoneCall size={16} className="mr-2 text-[#3f8ace]" /> {CONTACT_INFO.phone2}
             </a>
           </div>
           <div className="flex space-x-6 items-center">
-            <a href="mailto:kontakt@natryskujemy.pl" className="hover:text-white transition-colors">kontakt@natryskujemy.pl</a>
+            <a href={`mailto:${CONTACT_INFO.email}`} className="hover:text-white transition-colors">{CONTACT_INFO.email}</a>
             <div className="flex space-x-3 border-l border-slate-700 pl-6">
               <a href={SOCIAL_LINKS.facebook} className="text-slate-400 hover:text-[#1877F2] transition-colors"><Facebook size={16} /></a>
               <a href={SOCIAL_LINKS.instagram} className="text-slate-400 hover:text-[#E4405F] transition-colors"><Instagram size={16} /></a>
@@ -239,9 +239,9 @@ const AppContent = () => {
             <div>
                 <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-xs">Dane Firmy</h4>
                 <ul className="space-y-3">
-                    <li className="flex items-start"><MapPin size={16} className="mr-2 mt-1 flex-shrink-0 text-[#3f8ace]"/> ul. Legionów 37C<br/>42-600 Tarnowskie Góry</li>
-                    <li className="flex items-center"><PhoneCall size={16} className="mr-2 flex-shrink-0 text-[#3f8ace]"/> +48 500 000 000</li>
-                    <li className="flex items-center"><PhoneCall size={16} className="mr-2 flex-shrink-0 text-[#3f8ace]"/> +48 600 000 000</li>
+                    <li className="flex items-start"><MapPin size={16} className="mr-2 mt-1 flex-shrink-0 text-[#3f8ace]"/> <span>{CONTACT_INFO.address1}<br/>{CONTACT_INFO.address2}</span></li>
+                    <li className="flex items-center"><PhoneCall size={16} className="mr-2 flex-shrink-0 text-[#3f8ace]"/> {CONTACT_INFO.phone1}</li>
+                    <li className="flex items-center"><PhoneCall size={16} className="mr-2 flex-shrink-0 text-[#3f8ace]"/> {CONTACT_INFO.phone2}</li>
                 </ul>
             </div>
         </div>

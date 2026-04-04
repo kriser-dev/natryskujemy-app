@@ -23,10 +23,10 @@ export const TIMEOUTS = {
 };
 
 export const SOCIAL_LINKS = {
-  facebook: "https://www.facebook.com/TwojProfil",
-  instagram: "https://www.instagram.com/TwojProfil",
-  tiktok: "https://www.tiktok.com/@TwojProfil",
-  youtube: "https://www.youtube.com/@TwojKanal",
+  facebook: "https://www.facebook.com/natryskujemy",
+  instagram: "https://www.instagram.com/natryskujemy",
+  tiktok: "https://www.tiktok.com/@natryskujemy.pl?_t=ZN-8wBZYbwOh8c&_r=1",
+  youtube: "https://www.youtube.com/@Natryskujemy",
 };
 
 export const CONTACT_INFO = {
@@ -35,5 +35,6 @@ export const CONTACT_INFO = {
   phone2: "+48 690 080 708",
   phone2Clean: "48690080708",
   email: "kontakt@natryskujemy.pl",
-  address: "ul. Legionów 37C, 42-600 Tarnowskie Góry"
+  address1: "ul. Legionów 37c",
+  address2: "42-600 Tarnowskie Góry"
 };
