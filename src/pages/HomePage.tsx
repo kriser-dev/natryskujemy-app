@@ -9,6 +9,7 @@ import { FAQItem } from '../components/FAQItem';
 import { ServiceCard1, ServiceCard2, ServiceCard3 } from '../components/ServiceCards';
 import { Facebook, Instagram, TikTokIcon, Youtube } from '../components/Icons';
 import { SOCIAL_LINKS, CONTACT_INFO } from '../config/constants';
+import posterImage from '../assets/homeimage.webp';
 import hydroDachu from '../assets/hydroizolacja-dachu.webp';
 
 export default function HomePage() {
@@ -48,9 +49,11 @@ export default function HomePage() {
           {
             "@type": "LocalBusiness",
             "name": "natryskujemy.pl (HydroPAKiet)",
-            "image": "https://images.unsplash.com/photo-1621648057993-9c59577c3857?auto=format&fit=crop&q=80&w=800",
-            "telephone": "+48 504 056 342",
-			"telephone": "+48 690 080 708",
+            "image": "https://natryskujemy.pl/images/logo.webp",
+            "telephone": [
+				"+48 504 056 342",
+				"+48 690 080 708"
+			],
             "address": {
               "@type": "PostalAddress",
               "streetAddress": "ul. Legionów 37c",
@@ -78,7 +81,7 @@ export default function HomePage() {
         <video 
           autoPlay loop muted playsInline preload="none"
           className="absolute inset-0 w-full h-full object-cover z-0"
-          poster="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?auto=format&fit=crop&w=1920&q=80"
+          poster={posterImage}
         >
           <source src="/homevideo.mp4" type="video/mp4" />
         </video>
@@ -275,9 +278,11 @@ export default function HomePage() {
                           <>Wyślij zapytanie <Send size={20} className="ml-3 group-hover:translate-x-1 transition-transform" /></>
                         )}
                     </button>
-                    <div className="text-[10px] text-slate-400 mt-2">
-                      Ta strona korzysta z zabezpieczeń. W tym miejscu znajdzie się integracja z Google reCAPTCHA.
-                    </div>
+					
+<p className="text-xs text-slate-400 mt-4 text-center px-4 leading-relaxed">
+  Wysyłając wiadomość, wyrażasz zgodę na przetwarzanie swoich danych osobowych w celu obsługi zapytania. Szczegóły znajdziesz w naszej <a href="/polityka-prywatnosci" className="text-brand-primary hover:text-brand-dark hover:underline transition-colors">Polityce Prywatności</a>.
+</p>
+					
                 </form>
             </div>
 

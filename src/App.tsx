@@ -37,6 +37,7 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ProcessPage = lazy(() => import('./pages/ProcessPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const CookiesPolicyPage = lazy(() => import('./pages/CookiesPolicyPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Wskaźnik ładowania
 const LoadingSpinner = () => (
@@ -95,10 +96,10 @@ const AppContent = () => {
           <div className="flex space-x-6 items-center">
             <a href={`mailto:${CONTACT_INFO.email}`} className="hover:text-white transition-colors">{CONTACT_INFO.email}</a>
             <div className="flex space-x-3 border-l border-slate-700 pl-6">
-              <a href={SOCIAL_LINKS.facebook} className="text-slate-400 hover:text-[#1877F2] transition-colors"><Facebook size={16} /></a>
-              <a href={SOCIAL_LINKS.instagram} className="text-slate-400 hover:text-[#E4405F] transition-colors"><Instagram size={16} /></a>
-              <a href={SOCIAL_LINKS.tiktok} className="text-slate-400 hover:text-white transition-colors"><TikTokIcon size={16} /></a>
-              <a href={SOCIAL_LINKS.youtube} className="text-slate-400 hover:text-[#FF0000] transition-colors"><Youtube size={16} /></a>
+              <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-[#1877F2] transition-colors"><Facebook size={16} /></a>
+              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-[#E4405F] transition-colors"><Instagram size={16} /></a>
+              <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors"><TikTokIcon size={16} /></a>
+              <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-[#FF0000] transition-colors"><Youtube size={16} /></a>
             </div>
           </div>
         </div>
@@ -203,6 +204,8 @@ const AppContent = () => {
           {currentPage === 'process' && <ProcessPage />}
           {currentPage === 'privacy' && <PrivacyPolicyPage />}
           {currentPage === 'cookies' && <CookiesPolicyPage />}
+		  
+		  {!['home', 'portfolio', 'about', 'process', 'privacy', 'cookies'].includes(currentPage) && <NotFoundPage />}
         </Suspense>
       </main>
 
@@ -216,10 +219,10 @@ const AppContent = () => {
                 </div>
                 <p className="mb-4 text-slate-500">Profesjonalne usługi natryskowe na Śląsku. Gwarantujemy najwyższą jakość wykonania oraz terminowość.</p>
                 <div className="flex space-x-3 mb-4">
-                    <a href={SOCIAL_LINKS.facebook} aria-label="Facebook" className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white transition-all"><Facebook size={16} /></a>
-                    <a href={SOCIAL_LINKS.instagram} aria-label="Instagram" className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:border-transparent hover:text-white transition-all"><Instagram size={16} /></a>
-                    <a href={SOCIAL_LINKS.tiktok} aria-label="TikTok" className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-black hover:border-black hover:text-white transition-all"><TikTokIcon size={16} /></a>
-                    <a href={SOCIAL_LINKS.youtube} aria-label="YouTube" className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-[#FF0000] hover:border-[#FF0000] hover:text-white transition-all"><Youtube size={16} /></a>
+                    <a href={SOCIAL_LINKS.facebook} aria-label="Facebook" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white transition-all"><Facebook size={16} /></a>
+                    <a href={SOCIAL_LINKS.instagram} aria-label="Instagram" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:border-transparent hover:text-white transition-all"><Instagram size={16} /></a>
+                    <a href={SOCIAL_LINKS.tiktok} aria-label="TikTok" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-black hover:border-black hover:text-white transition-all"><TikTokIcon size={16} /></a>
+                    <a href={SOCIAL_LINKS.youtube} aria-label="YouTube" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-[#FF0000] hover:border-[#FF0000] hover:text-white transition-all"><Youtube size={16} /></a>
                 </div>
                 <p className="text-xs text-slate-600">Marka obsługiwana przez firmę HydroPAKiet.</p>
             </div>

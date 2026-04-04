@@ -1,5 +1,5 @@
-import React from 'react';
 import { Info } from 'lucide-react';
+import { CONTACT_INFO } from '../config/constants';
 
 export default function PrivacyPolicyPage() {
   return (
@@ -14,7 +14,7 @@ export default function PrivacyPolicyPage() {
           <p className="lead text-lg font-medium text-slate-700">Niniejsza polityka prywatności określa zasady przetwarzania i ochrony danych osobowych przekazanych przez Użytkowników w związku z korzystaniem z usług poprzez serwis natryskujemy.pl.</p>
           
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">1. Administrator Danych Osobowych</h3>
-          <p>Administratorem danych osobowych zawartych w serwisie jest firma <strong>HydroPAKiet</strong> z siedzibą przy ul. Legionów 37C, 42-600 Tarnowskie Góry.</p>
+          <p>Administratorem danych osobowych zawartych w serwisie jest firma <strong>HydroPAKiet</strong> z siedzibą: {CONTACT_INFO.address1}, {CONTACT_INFO.address2}.</p>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">2. Cel zbierania danych</h3>
           <p>Dane osobowe (takie jak: imię, nazwisko, adres e-mail, numer telefonu) podawane w formularzach kontaktowych są przetwarzane wyłącznie w celu:</p>
@@ -25,14 +25,13 @@ export default function PrivacyPolicyPage() {
           </ul>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">3. Ochrona i udostępnianie</h3>
-          <p>Szanujemy Twoją prywatność. Dane osobowe pozostawione w serwisie nie zostaną sprzedane ani udostępnione osobom trzecim, zgodnie z przepisami Ustawy o ochronie danych osobowych oraz Rozporządzenia RODO.</p>
+          <p>Szanujemy Twoją prywatność. Dane osobowe pozostawione w serwisie są odpowiednio zabezpieczone i nie zostaną sprzedane ani udostępnione osobom trzecim bez Twojej zgody, zgodnie z przepisami Rozporządzenia o Ochronie Danych Osobowych (RODO).</p>
 
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">4. Twoje prawa</h3>
-          <p>Do danych zawartych w formularzu przysługuje wgląd osobie fizycznej, która je tam umieściła. Osoba ta ma również prawo do modyfikacji, żądania usunięcia (tzw. "prawo do bycia zapomnianym") i zaprzestania przetwarzania swoich danych w dowolnym momencie, kontaktując się pod adresem: <strong>kontakt@natryskujemy.pl</strong>.</p>
+          <p>Do danych zawartych w formularzu przysługuje wgląd osobie fizycznej, która je tam umieściła. Osoba ta ma również prawo do ich sprostowania, usunięcia (tzw. "prawo do bycia zapomnianym"), ograniczenia przetwarzania oraz przenoszenia danych, kontaktując się z Administratorem pod adresem: <strong><a href={`mailto:${CONTACT_INFO.email}`} className="text-[#3f8ace] hover:underline">{CONTACT_INFO.email}</a></strong>.</p>
           
-          <div className="mt-12 p-6 bg-slate-50 rounded-2xl border border-slate-200 text-sm">
-            Powyższy tekst jest wzorem poglądowym. Przed oficjalną publikacją strony należy skonsultować ostateczną treść ze specjalistą ds. RODO.
-          </div>
+          <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">5. Pliki Cookies (Ciasteczka)</h3>
+          <p>Nasz serwis zbiera w sposób automatyczny informacje zawarte w plikach cookies. Są one wykorzystywane wyłącznie do zapewnienia prawidłowego działania strony oraz w podstawowych celach analitycznych, pomagając nam zrozumieć, jak Użytkownicy korzystają z serwisu.</p>
         </div>
       </div>
     </div>

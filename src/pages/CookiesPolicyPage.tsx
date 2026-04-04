@@ -1,4 +1,3 @@
-import React from 'react';
 import { Cookie } from 'lucide-react';
 
 export default function CookiesPolicyPage() {
@@ -27,6 +26,11 @@ export default function CookiesPolicyPage() {
           <h3 className="text-xl font-bold text-slate-800 mt-8 mb-4">Zarządzanie plikami cookies</h3>
           <p>Standardowo oprogramowanie służące do przeglądania stron internetowych domyślnie dopuszcza umieszczanie plików cookies na urządzeniu końcowym. Ustawienia te mogą zostać zmienione przez Użytkownika w taki sposób, aby blokować automatyczną obsługę plików cookies w ustawieniach przeglądarki internetowej.</p>
           <p className="font-medium mt-4">Pamiętaj, że ograniczenie stosowania plików cookies może wpłynąć na niektóre funkcjonalności dostępne na naszej stronie internetowej.</p>
+          
+          <hr className="my-8 border-slate-200" />
+          <p className="text-sm text-slate-500">
+            Więcej informacji o tym, jak chronimy Twoje dane, znajdziesz w naszej <a href="/polityka-prywatnosci" className="text-[#3f8ace] hover:underline font-medium">Polityce Prywatności</a>.
+          </p>
         </div>
       </div>
     </div>
