@@ -36,5 +36,6 @@ export const CONTACT_INFO = {
   phone2Clean: "48690080708",
   email: "kontakt@natryskujemy.pl",
   address1: "ul. Legionów 37c",
-  address2: "42-600 Tarnowskie Góry"
+  address2: "42-600 Tarnowskie Góry",
+  website: 'https://hydropakiet.pl'
 };

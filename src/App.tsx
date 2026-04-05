@@ -8,6 +8,7 @@ import { AppProvider, useAppContext, throttle } from './context/AppContext';
 import { Facebook, Instagram, TikTokIcon, Youtube } from './components/Icons';
 import { TIMEOUTS, UI_CONFIG, SOCIAL_LINKS, CONTACT_INFO } from './config/constants';
 import logoFirmy from './assets/natryskujemy.webp';
+import logoFirmyHydro from './assets/hydropakiet.webp';
 
 // Komponent Error Boundary
 class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean}> {
@@ -224,7 +225,21 @@ const AppContent = () => {
                     <a href={SOCIAL_LINKS.tiktok} aria-label="TikTok" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-black hover:border-black hover:text-white transition-all"><TikTokIcon size={16} /></a>
                     <a href={SOCIAL_LINKS.youtube} aria-label="YouTube" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-[#FF0000] hover:border-[#FF0000] hover:text-white transition-all"><Youtube size={16} /></a>
                 </div>
-                <p className="text-xs text-slate-600">Marka obsługiwana przez firmę HydroPAKiet.</p>
+				{/* NOWA SEKCJA LOGO HYDROPAKIET */}
+                <div className="mt-6 pt-6 border-t border-slate-800/50">
+                    <p className="text-xs text-slate-500 mb-3">Marka obsługiwana przez firmę:</p>
+                    <a href={CONTACT_INFO.website} target="_blank" rel="noopener noreferrer" className="inline-block group">
+                        <div className="bg-slate-900/50 hover:bg-slate-800/80 px-4 py-2.5 rounded-lg border border-slate-800 group-hover:border-slate-600 transition-all">
+                            <img 
+                                src={logoFirmyHydro} 
+                                alt="Strona główna firmy HydroPAKiet" 
+								width="160" 
+								height="98" 
+								className="h-6 md:h-8 w-auto object-contain"    
+							/>
+                        </div>
+                    </a>
+                </div>
             </div>
             
             <div>
