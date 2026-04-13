@@ -322,8 +322,8 @@ export default function HomePage() {
                                         <CheckCircle2 size={32}/>
                                     </div>
                                     <h4 className="text-2xl font-bold text-slate-900 mb-2">Dziękujemy za zapytanie!</h4>
-                                    <p className="text-slate-600">Wiadomość została wysłana pomyślnie. Nasz doradca
-                                        skontaktuje się z Tobą wkrótce.</p>
+                                    <p className="text-slate-600">Wiadomość została wysłana pomyślnie.
+                                        Skontaktujemy się z Tobą wkrótce.</p>
                                 </div>
                             )}
 
@@ -361,7 +361,7 @@ export default function HomePage() {
                                         obiektu / Wyzwanie</label>
                                     <textarea id="message" name="message" rows={4} required minLength={10}
                                               className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 outline-none transition-all resize-none disabled:bg-slate-50"
-                                              placeholder="Opisz w kilku słowach z czym możemy Ci pomóc..."
+                                              placeholder="Opisz w kilku słowach w czym możemy Ci pomóc..."
                                               disabled={formStatus === 'submitting'}></textarea>
                                 </div>
 
