@@ -42,9 +42,7 @@ export default function PortfolioPage() {
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6">Nasze <span
                         className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-cyan-300">Realizacje.</span>
                     </h1>
-                    <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">Nie sprzedajemy obietnic.
-                        Zobacz konkretne problemy techniczne naszych klientów i sprawdź, jak sprawnie je
-                        rozwiązaliśmy.</p>
+                    <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">Zobacz przykłady prac i sprawdź, w jakich sytuacjach pomagamy klientom uporządkować temat hydroizolacji i prac natryskowych.</p>
                 </div>
             </div>
 

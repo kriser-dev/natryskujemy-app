@@ -114,53 +114,75 @@ export default function HomePage() {
             }}/>
 
             {/* Sekcja Hero */}
-            <section className="relative bg-slate-900 overflow-hidden min-h-[80vh] flex items-center">
+            <section className="relative bg-slate-900 overflow-hidden min-h-screen flex items-center">
+                {/* Video background */}
                 <video
                     autoPlay
                     loop
                     muted
                     playsInline
-                    preload="auto" /* Zmiana 1: Pozwalamy przeglądarce ładować wideo od razu */
-                    fetchPriority="high" /* Zmiana 2: Mówimy Google "Ładuj to jako absolutny priorytet!" */
-                    aria-hidden="true" /* Zmiana 3: Ukrywamy przed czytnikami dla osób niewidomych (bo to tylko tło) */
+                    preload="auto"
+                    fetchPriority="high"
+                    aria-hidden="true"
                     className="absolute inset-0 w-full h-full object-cover z-0"
                     poster={posterImage}
                 >
                     <source src="/homevideo.mp4" type="video/mp4"/>
                 </video>
-                <div className="absolute inset-0 bg-slate-900/70 z-10"></div>
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-20 mt-10">
-                    <div className="max-w-3xl">
-                        <div
-                            className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 text-blue-100 font-medium text-sm mb-6 border border-white/20 backdrop-blur-sm">
-                            <MapPin size={16} className="mr-2"/> Działamy na terenie całego Śląska
-                        </div>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg">
-                            Technologie natryskowe <br className="hidden md:block"/>
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-cyan-300">
-                i hydroizolacje.
-              </span>
-                        </h1>
-                        <p className="text-lg md:text-xl text-slate-200 mb-10 leading-relaxed drop-shadow-md font-medium">
-                            Rozwiązujemy realne problemy techniczne. Jeśli liczy się spokój po odbiorze – jesteś w
-                            dobrym miejscu.
-                        </p>
-                        <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                            <a href="#kontakt" onClick={(e) => {
-                                e.preventDefault();
-                                navigateTo('home', 'kontakt');
-                            }}
-                               className="bg-brand-primary hover:bg-brand-dark text-white px-8 py-4 rounded-full font-bold text-lg transition-all text-center flex items-center justify-center shadow-lg shadow-brand-primary/40">
-                                Zapraszamy do Kontaktu <ArrowRight className="ml-2" size={20}/>
-                            </a>
-                            <a href="#uslugi" onClick={(e) => {
-                                e.preventDefault();
-                                navigateTo('home', 'uslugi');
-                            }}
-                               className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg transition-all text-center backdrop-blur-md">
-                                Poznaj nasze usługi
-                            </a>
+                {/* Dark overlay (lepszy kontrast) */}
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-900/60 z-10"></div>
+
+                {/* Content */}
+                <div className="relative z-20 w-full">
+                    <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+
+                        <div className="max-w-5xl">
+
+                            {/* Badge */}
+                            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 text-blue-100 font-medium text-sm mb-6 border border-white/20 backdrop-blur-sm">
+                                <MapPin size={16} className="mr-2"/>
+                                Działamy na terenie całego Śląska
+                            </div>
+
+                            {/* Heading */}
+                            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.05] mb-6 tracking-tight">
+                                Pewność wykonania hydroizolacji i prac natryskowych dla obiektów
+                                <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-cyan-300">
+                        za które naprawdę odpowiadasz
+                    </span>
+                            </h1>
+
+                            {/* Description */}
+                            <p className="max-w-2xl text-lg md:text-xl text-slate-200 mb-10 leading-relaxed font-medium">
+                                Pracujemy dla zarządców, spółdzielni, wspólnot i firm, które potrzebują trwałego rozwiązania, dobrej organizacji pracy i odpowiedzialności za efekt końcowy.
+                            </p>
+
+                            {/* CTA */}
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <a
+                                    href="#kontakt"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        navigateTo('home', 'kontakt');
+                                    }}
+                                    className="bg-brand-primary hover:bg-brand-dark text-white px-8 py-4 rounded-full font-bold text-lg transition-all flex items-center justify-center shadow-lg shadow-brand-primary/40"
+                                >
+                                    Zapraszamy do kontaktu
+                                    <ArrowRight className="ml-2" size={20}/>
+                                </a>
+
+                                <a
+                                    href="#uslugi"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        navigateTo('home', 'uslugi');
+                                    }}
+                                    className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg transition-all text-center backdrop-blur-md"
+                                >
+                                    Poznaj nasze usługi
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -193,11 +215,8 @@ export default function HomePage() {
                                 nie do „pakietu usług”.</h3>
                             <p className="text-slate-300 text-lg mb-6 leading-relaxed">
                                 Każdą realizację traktujemy jak projekt – z analizą, doborem technologii i kontrolą
-                                wykonania. Za marką <strong>natryskujemy.pl</strong> stoi rzetelność i doświadczenie
-                                firmy HydroPAKiet. Specjalizujemy się w hydroizolacji i malowaniu natryskowym,
-                                przywracając nie tylko estetyczny wygląd, ale również trwałość i ochronę na lata. Zaufaj
-                                profesjonalistom, którzy dbają o każdy szczegół, oferując kompleksowe rozwiązania
-                                dostosowane do Twoich potrzeb.
+                                wykonania. Klienci wybierają nas wtedy, gdy liczy się nie tylko wykonanie usługi, ale też sposób prowadzenia całego tematu: rzetelna ocena sytuacji, dobór właściwego rozwiązania, terminowość i odpowiedzialność za jakość pracy. Za marką <strong>natryskujemy.pl</strong> stoi rzetelność i doświadczenie
+                                firmy HydroPAKiet.
                             </p>
 
                             <div className="grid grid-cols-2 gap-6 mt-10">
@@ -311,8 +330,7 @@ export default function HomePage() {
 
                     <div className="bg-white rounded-3xl p-6 md:p-10 shadow-2xl flex flex-col lg:flex-row gap-12">
                         <div className="lg:w-3/5 relative">
-                            <h3 className="text-2xl font-bold text-slate-900 mb-6">Opisz obiekt i wyzwanie – resztę
-                                przeprowadzimy procesowo</h3>
+                            <h3 className="text-2xl font-bold text-slate-900 mb-6">Zostaw kontakt i kilka informacji o obiekcie lub problemie. Wrócimy do Ciebie z informacją, jaki kolejny krok będzie najbardziej sensowny.</h3>
 
                             {formStatus === 'success' && (
                                 <div
