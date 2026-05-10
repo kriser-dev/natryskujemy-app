@@ -72,6 +72,7 @@ const AppContent = () => {
     const [isAboutMobileOpen, setIsAboutMobileOpen] = useState(false);
     const [showScrollTop, setShowScrollTop] = useState(false);
     const [showCookieBanner, setShowCookieBanner] = useState(false);
+    const [scrollProgress, setScrollProgress] = useState(0);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -80,11 +81,28 @@ const AppContent = () => {
 
     useEffect(() => {
         const handleScroll = throttle(() => {
+            // 1. Strzałka powrotu na górę (Twój oryginalny kod)
             setShowScrollTop(window.scrollY > UI_CONFIG.SCROLL_THRESHOLD);
+
+            // 2. NOWOŚĆ: Obliczanie postępu dla paska na górze
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+            if (height > 0) {
+                setScrollProgress((winScroll / height) * 100);
+            } else {
+                setScrollProgress(0);
+            }
         }, UI_CONFIG.SCROLL_THROTTLE_LIMIT);
 
-        window.addEventListener('scroll', handleScroll);
+        // Używamy { passive: true } - to dobra praktyka dla płynności scrollowania
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
+        // Wywołujemy funkcję raz na start - dzięki temu jeśli klient odświeży stronę
+        // będąc w jej połowie, pasek od razu skoczy na 50%, zamiast zaczynać od 0.
+        handleScroll();
+
+        // 3. Baner ciasteczek (Twój oryginalny kod)
         if (!localStorage.getItem('natryskujemy_cookie_consent')) {
             setTimeout(() => setShowCookieBanner(true), TIMEOUTS.COOKIE_BANNER);
         }
@@ -105,11 +123,20 @@ const AppContent = () => {
     return (
         <div
             className="min-h-screen bg-slate-50 font-sans text-slate-800 selection:bg-brand-primary selection:text-white flex flex-col">
+
+            {/* PASEK POSTĘPU NA SAMEJ GÓRZE */}
+            <div className="fixed top-0 left-0 w-full h-1.5 z-[100] bg-slate-100">
+                <div
+                    className="h-full bg-brand-primary shadow-[0_0_10px_rgba(37,99,235,0.5)] transition-all duration-150 ease-out"
+                    style={{ width: `${scrollProgress}%` }}
+                ></div>
+            </div>
+
             <div
                 className={`fixed top-0 left-0 h-1.5 bg-brand-primary z-[100] transition-all duration-300 ease-out ${isNavigating ? 'w-full opacity-100' : 'w-0 opacity-0'}`}/>
 
             {/* Pasek Górny */}
-            <div className="bg-slate-900 text-slate-300 py-2 px-4 text-sm hidden lg:block">
+            <div className="bg-slate-900 text-slate-300 pt-3.5 pb-2 px-4 text-sm hidden lg:block">
                 <div className="max-w-7xl mx-auto flex justify-between items-center">
                     <div className="flex space-x-6">
                         <a href={`tel:+${CONTACT_INFO.phone1Clean}`}
