@@ -18,6 +18,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({children}) => {
             "portfolio",
             "about",
             "process",
+            "contact",
             "privacy",
             "cookies",
         ];

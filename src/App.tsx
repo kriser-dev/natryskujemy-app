@@ -55,6 +55,7 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ProcessPage = lazy(() => import('./pages/ProcessPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const CookiesPolicyPage = lazy(() => import('./pages/CookiesPolicyPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Wskaźnik ładowania
@@ -210,7 +211,7 @@ const AppContent = () => {
                                 </div>
                             </div>
 
-                            <button onClick={() => navigateTo('home', 'kontakt')}
+                            <button onClick={() => navigateTo('contact')}
                                     className="bg-brand-primary hover:bg-brand-dark text-white px-6 py-2.5 rounded-full font-semibold transition-all transform hover:scale-105 flex items-center shadow-lg shadow-brand-primary/30">
                                 <PhoneCall size={18} className="mr-2"/> Kontakt
                             </button>
@@ -269,7 +270,7 @@ const AppContent = () => {
                                     </div>
                                 )}
                             </div>
-                            <button onClick={() => navigateTo('home', 'kontakt')}
+                            <button onClick={() => navigateTo('contact')}
                                     className="text-center mt-4 px-4 py-4 text-base font-bold text-white bg-brand-primary rounded-xl shadow-lg shadow-brand-primary/30">Kontakt
                             </button>
                         </div>
@@ -286,9 +287,10 @@ const AppContent = () => {
                     {currentPage === 'about' && <AboutPage/>}
                     {currentPage === 'process' && <ProcessPage/>}
                     {currentPage === 'privacy' && <PrivacyPolicyPage/>}
+                    {currentPage === 'contact' && <ContactPage/>}
                     {currentPage === 'cookies' && <CookiesPolicyPage/>}
 
-                    {!['home', 'portfolio', 'about', 'process', 'privacy', 'cookies'].includes(currentPage) &&
+                    {!['home', 'portfolio', 'about', 'process', 'privacy', 'contact', 'cookies'].includes(currentPage) &&
                         <NotFoundPage/>}
                 </Suspense>
             </main>

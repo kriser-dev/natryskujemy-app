@@ -1,4 +1,4 @@
-export type Page = 'home' | 'portfolio' | 'about' | 'process' | 'privacy' | 'cookies' | '404';
+export type Page = 'home' | 'portfolio' | 'about' | 'process' | 'contact' | 'privacy' | 'cookies' | '404';
 
 export interface FAQItemData {
     q: string;
