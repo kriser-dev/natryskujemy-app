@@ -54,8 +54,12 @@ export default function HomePage() {
             setDownloadStatus('success');
             setTimeout(() => setDownloadStatus('idle'), 3000);
 
-        } catch (error) {
-            console.error('Błąd pobierania pliku:', error);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error('Błąd pobierania pliku:', error.message);
+            } else {
+                console.error('Błąd pobierania pliku:', error);
+            }
             // Pokazujemy błąd (czerwony przycisk) i blokujemy pobranie śmieciowego pliku
             setDownloadStatus('error');
             setTimeout(() => setDownloadStatus('idle'), 5000);
