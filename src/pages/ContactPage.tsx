@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, type SubmitEvent } from 'react';
 import { MapPin, CheckCircle2, PhoneCall, Mail, Send, Loader2 } from 'lucide-react';
 import { Facebook, Instagram, TikTokIcon, Youtube } from '../components/Icons';
 import { SOCIAL_LINKS, CONTACT_INFO, TIMEOUTS } from '../config/constants';
@@ -7,7 +7,8 @@ export default function ContactPage() {
     const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    // ZMIANA: Używamy SubmitEvent zamiast React.FormEvent
+    const handleFormSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setFormStatus('submitting');
         setErrorMessage(null);
