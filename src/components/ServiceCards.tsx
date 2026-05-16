@@ -7,12 +7,41 @@ import imgUsluga3 from '../assets/usluga-gladzie.webp';
 
 // --- MINI-KOMPONENT FORMULARZA (ANKIETY) ---
 const QuickSurveyForm = ({ serviceName, placeholder }: { serviceName: string, placeholder: string }) => {
-    const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+    const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
-    const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setStatus('submitting');
-        setTimeout(() => setStatus('success'), 1500);
+
+        // Pobieramy dane z formularza
+        const formData = new FormData(e.currentTarget);
+        const data = {
+            serviceType: formData.get('serviceType'),
+            email: formData.get('email'),
+            area: formData.get('area'),
+            message: formData.get('description'), // backend wymaga "message", więc tu to parujemy
+        };
+
+        try {
+            // Pamiętaj by podmienić ten adres przed wrzuceniem na docelowy serwer cal.pl!
+            const response = await fetch('http://localhost:3000/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                setStatus('success');
+            } else {
+                console.error('Błąd serwera podczas wysyłania');
+                setStatus('error');
+                setTimeout(() => setStatus('idle'), 4000);
+            }
+        } catch (error) {
+            console.error('Błąd połączenia:', error);
+            setStatus('error');
+            setTimeout(() => setStatus('idle'), 4000);
+        }
     };
 
     if (status === 'success') {
@@ -30,21 +59,27 @@ const QuickSurveyForm = ({ serviceName, placeholder }: { serviceName: string, pl
             <div className="relative z-10">
                 <div className="flex items-center mb-2">
                     <div className="w-2 h-2 rounded-full mr-3 animate-pulse bg-brand-primary"></div>
-                    <h4 className="text-lg sm:text-xl font-bold text-slate-900">Szybka pomoc: {serviceName}</h4>
+                    <h4 className="text-lg sm:text-xl font-bold text-slate-900">Szybka wycena: {serviceName}</h4>
                 </div>
-                {/* ZMIENIONY TEKST ZACHĘTY */}
                 <p className="text-slate-600 text-sm mb-6">Zostaw e-mail i krótki opis sytuacji. Skontaktujemy się, by ocenić, czy i jak możemy pomóc.</p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input type="hidden" name="serviceType" value={serviceName} />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {/* ZMIENIONE POLE NA ADRES EMAIL */}
-                        <input type="email" name="email" required placeholder="Twój adres e-mail" className="w-full px-4 py-3 rounded-xl border border-white focus:ring-2 outline-none transition-all shadow-sm focus:border-brand-primary focus:ring-brand-primary/20" />
-                        <input type="text" name="area" placeholder="Szacunkowy metraż (m²)" className="w-full px-4 py-3 rounded-xl border border-white focus:ring-2 outline-none transition-all shadow-sm focus:border-brand-primary focus:ring-brand-primary/20" />
+                        <input type="email" name="email" required placeholder="Twój adres e-mail" disabled={status === 'submitting'} className="w-full px-4 py-3 rounded-xl border border-white focus:ring-2 outline-none transition-all shadow-sm focus:border-brand-primary focus:ring-brand-primary/20 disabled:opacity-50" />
+                        <input type="text" name="area" placeholder="Szacunkowy metraż (m²)" disabled={status === 'submitting'} className="w-full px-4 py-3 rounded-xl border border-white focus:ring-2 outline-none transition-all shadow-sm focus:border-brand-primary focus:ring-brand-primary/20 disabled:opacity-50" />
                     </div>
                     <div>
-                        <textarea name="description" required rows={2} placeholder={placeholder} className="w-full px-4 py-3 rounded-xl border border-white focus:ring-2 outline-none transition-all shadow-sm resize-none focus:border-brand-primary focus:ring-brand-primary/20"></textarea>
+                        <textarea name="description" required rows={2} placeholder={placeholder} disabled={status === 'submitting'} className="w-full px-4 py-3 rounded-xl border border-white focus:ring-2 outline-none transition-all shadow-sm resize-none focus:border-brand-primary focus:ring-brand-primary/20 disabled:opacity-50"></textarea>
                     </div>
+
+                    {/* Komunikat błędu */}
+                    {status === 'error' && (
+                        <div className="bg-red-50 text-red-600 text-sm p-3 rounded-xl border border-red-100 text-center animate-in fade-in">
+                            Błąd serwera. Spróbuj ponownie lub użyj zakładki Kontakt.
+                        </div>
+                    )}
+
                     <button type="submit" disabled={status === 'submitting'} className="w-full sm:w-auto text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-md flex items-center justify-center group disabled:opacity-70 bg-brand-primary hover:bg-brand-dark">
                         {status === 'submitting' ? <><Loader2 className="animate-spin mr-2" size={18}/> Wysyłanie...</> : <>Przekaż do wyceny <Send size={18} className="ml-2 group-hover:translate-x-1 transition-transform"/></>}
                     </button>
