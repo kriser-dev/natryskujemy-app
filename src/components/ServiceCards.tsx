@@ -1,9 +1,10 @@
 import { useState, type SubmitEvent, type ReactNode } from 'react';
-import { ShieldCheck, PaintRoller, Layers, ArrowRight, CheckCircle2, X, Send, Loader2, type LucideIcon } from 'lucide-react';
+import { ShieldCheck, PaintRoller, Layers, Droplets, ArrowRight, CheckCircle2, X, Send, Loader2, type LucideIcon } from 'lucide-react';
 
 import imgUsluga1 from '../assets/usluga-dach.webp';
 import imgUsluga2 from '../assets/usluga-malowanie.webp';
 import imgUsluga3 from '../assets/usluga-gladzie.webp';
+import imgUsluga4 from '../assets/usluga-posadzki.webp'; // <-- IMPORT ZDJĘCIA NOWEJ USŁUGI
 
 // --- MINI-KOMPONENT FORMULARZA (ANKIETY) ---
 const QuickSurveyForm = ({ serviceName, placeholder }: { serviceName: string, placeholder: string }) => {
@@ -13,17 +14,15 @@ const QuickSurveyForm = ({ serviceName, placeholder }: { serviceName: string, pl
         e.preventDefault();
         setStatus('submitting');
 
-        // Pobieramy dane z formularza
         const formData = new FormData(e.currentTarget);
         const data = {
             serviceType: formData.get('serviceType'),
             email: formData.get('email'),
             area: formData.get('area'),
-            message: formData.get('description'), // backend wymaga "message", więc tu to parujemy
+            message: formData.get('description'),
         };
 
         try {
-            // Pamiętaj by podmienić ten adres przed wrzuceniem na docelowy serwer cal.pl!
             const response = await fetch('http://localhost:3000/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -73,7 +72,6 @@ const QuickSurveyForm = ({ serviceName, placeholder }: { serviceName: string, pl
                         <textarea name="description" required rows={2} placeholder={placeholder} disabled={status === 'submitting'} className="w-full px-4 py-3 rounded-xl border border-white focus:ring-2 outline-none transition-all shadow-sm resize-none focus:border-brand-primary focus:ring-brand-primary/20 disabled:opacity-50"></textarea>
                     </div>
 
-                    {/* Komunikat błędu */}
                     {status === 'error' && (
                         <div className="bg-red-50 text-red-600 text-sm p-3 rounded-xl border border-red-100 text-center animate-in fade-in">
                             Błąd serwera. Spróbuj ponownie lub użyj zakładki Kontakt.
@@ -193,7 +191,7 @@ const BaseServiceCard = (props: BaseServiceCardProps) => {
                                             </li>
                                         ))}
                                     </ul>
-                                    </div>
+                                </div>
                                 <QuickSurveyForm serviceName={props.formServiceName} placeholder={props.formPlaceholder} />
                             </div>
                         </div>
@@ -226,4 +224,11 @@ export const ServiceCard3 = () => (
         frontImage={imgUsluga3}
         frontIcon={Layers}
         frontTitle="Gładzie Polimerowe" frontList={['- Lorem ipsum dolor sit amet', '- Consectetur adipiscing elit']} backTheme="primary" backTitle="Gładzie Polimerowe" backSubtitle="Szybkość, powtarzalność i jakość możliwa do skontrolowania." backDescription="Idealnie równe ściany w ułamku czasu. Gwarancja perfekcyjnego przygotowania powierzchni." backList={['Perfekcyjna gładkość (Q3/Q4)', 'Znacznie mniejsze pylenie', 'Wysoka twardość i odporność']} modalTitle="Natryskowe Gładzie Polimerowe" modalQuote="Gładzie polimerowe aplikowane natryskowo to obecnie najwyższy standard przygotowania ścian pod malowanie lub tapetowanie." modalDescription={<p>Dzięki maszynowej aplikacji warstwa jest idealnie równa na całej płaszczyźnie, co eliminuje ryzyko powstawania nierówności widocznych pod światło na dużych powierzchniach.</p>} modalFeatures={['Perfekcyjna gładkość (Q3/Q4)', 'Idealnie równa warstwa', 'Znacznie mniejsze pylenie', 'Wysoka twardość ściany']} formServiceName="Gładzie Polimerowe" formPlaceholder="Opisz obiekt (np. nowe biura, ściany działowe z karton-gipsu, wysoki standard wykończenia...)" />
+);
+
+export const ServiceCard4 = () => (
+    <BaseServiceCard
+        frontImage={imgUsluga4}
+        frontIcon={Droplets}
+        frontTitle="Posadzki Żywiczne" frontList={['- Lorem ipsum dolor sit amet', '- Consectetur adipiscing elit']} backTheme="primary" backTitle="Posadzki Żywiczne" backSubtitle="Trwałość i estetyka bez kompromisów." backDescription="Tworzymy niezwykle odporne posadzki epoksydowe i poliuretanowe, idealne do hal, magazynów oraz nowoczesnych wnętrz." backList={['Wysoka odporność mechaniczna', 'Łatwość w utrzymaniu czystości', 'Brak spoin i łączeń']} modalTitle="Systemy Posadzek Żywicznych" modalQuote="Posadzka, która zniesie największe obciążenia, zachowując przy tym nienaganny wygląd przez lata." modalDescription={<p>Aplikujemy profesjonalne posadzki żywiczne, precyzyjnie dopasowując grubość i właściwości systemu do specyfiki danego obiektu – od intensywnie użytkowanych hal produkcyjnych po estetyczne garaże i przestrzenie komercyjne.</p>} modalFeatures={['Ekstremalna odporność na ścieranie', 'Powłoka antypoślizgowa (opcja)', 'Odporność na chemię i oleje', 'Szeroka paleta kolorów']} formServiceName="Posadzki Żywiczne" formPlaceholder="Opisz obiekt (np. hala produkcyjna 200m2, stary beton, poszukujemy odporności chemicznej...)" />
 );

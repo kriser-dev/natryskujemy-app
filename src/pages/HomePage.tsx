@@ -3,7 +3,7 @@ import { MapPin, ArrowRight, Star, Play, Pause, HelpCircle, Download, Loader2, C
 import { useAppContext } from '../context/useAppContext';
 import { faqsData, opinionsData } from '../data';
 import { FAQItem } from '../components/FAQItem';
-import { ServiceCard1, ServiceCard2, ServiceCard3 } from '../components/ServiceCards';
+import { ServiceCard1, ServiceCard2, ServiceCard3, ServiceCard4 } from '../components/ServiceCards';
 import posterImage from '../assets/homeimage.webp';
 import hydroDachu from '../assets/hydroizolacja-dachu.webp';
 
@@ -144,9 +144,9 @@ export default function HomePage() {
                             </div>
 
                             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.05] mb-6 tracking-tight">
-                                Pewność wykonania hydroizolacji i prac natryskowych dla obiektów
+                                Hydroizolacje dachów, tarasów, balkonów
                                 <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-cyan-300">
-                                    za które naprawdę odpowiadasz
+                                    system poliuretanowy, system zimny dach
                                 </span>
                             </h1>
 
@@ -216,10 +216,11 @@ export default function HomePage() {
                         <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Nasze usługi</h2>
                         <p className="text-slate-600 text-lg">Nie sprzedajemy „usługi”. Bierzemy odpowiedzialność za efekt i trwałość realizacji. Dla obiektów, za które ktoś naprawdę odpowiada.</p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
                         <ServiceCard1/>
                         <ServiceCard2/>
                         <ServiceCard3/>
+                        <ServiceCard4/>
                     </div>
                 </div>
             </section>
