@@ -3,11 +3,14 @@ import { MapPin, CheckCircle2, PhoneCall, Mail, Send, Loader2 } from 'lucide-rea
 import { Facebook, Instagram, TikTokIcon, Youtube } from '../components/Icons';
 import { SOCIAL_LINKS, CONTACT_INFO, TIMEOUTS } from '../config/constants';
 
+// ZDJĘCIA DORADCÓW - Pamiętaj by wrzucić te pliki do folderu src/assets/
+import imgOsoba1 from '../assets/osoba1.webp';
+import imgOsoba2 from '../assets/osoba2.webp';
+
 export default function ContactPage() {
     const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    // ZMIANA: Używamy SubmitEvent zamiast React.FormEvent
     const handleFormSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setFormStatus('submitting');
@@ -22,7 +25,6 @@ export default function ContactPage() {
         };
 
         try {
-            // Pamiętaj by podmienić ten adres przed wrzuceniem na docelowy serwer cal.pl!
             const response = await fetch('http://localhost:3000/api/contact', {
                 method: 'POST',
                 headers: {
@@ -74,7 +76,7 @@ export default function ContactPage() {
                                     <CheckCircle2 size={32}/>
                                 </div>
                                 <h4 className="text-2xl font-bold text-slate-900 mb-2">Dziękujemy za zapytanie!</h4>
-                                <p className="text-slate-600">Wiadomość została wysłana pomyślnie. Skontaktujemy się z Tobą wkrótce.</p>
+                                <p className="text-slate-600">Wiadomość została wysłana pomyślnie. Skontaktujemy się z Tobą wkorotce.</p>
                             </div>
                         )}
 
@@ -133,47 +135,90 @@ export default function ContactPage() {
                     <div className="lg:w-2/5 bg-slate-50 rounded-2xl p-8 border border-slate-100 flex flex-col justify-center">
                         <h3 className="text-xl font-bold text-slate-900 mb-8">Bezpośredni kontakt</h3>
                         <div className="space-y-8">
+
+                            {/* POPRAWIONA SEKCJA TELEFONU - IKONA + OSOBNE AWATARY DLA KAŻDEGO NUMERU */}
                             <div className="flex items-start">
-                                <div className="w-12 h-12 bg-brand-primary/10 rounded-full flex items-center justify-center text-brand-primary mr-4 flex-shrink-0">
+                                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center text-brand-primary mr-5 flex-shrink-0 shadow-sm border border-slate-100">
                                     <PhoneCall size={24}/>
                                 </div>
-                                <div>
-                                    <div className="text-sm font-medium text-slate-500 mb-1">Doradztwo techniczne i wyceny</div>
-                                    <div className="flex flex-col space-y-2">
-                                        <a href={`tel:+${CONTACT_INFO.phone1Clean}`} className="text-2xl font-bold text-slate-900 hover:text-brand-primary transition-colors">{CONTACT_INFO.phone1}</a>
-                                        <a href={`tel:+${CONTACT_INFO.phone2Clean}`} className="text-2xl font-bold text-slate-900 hover:text-brand-primary transition-colors">{CONTACT_INFO.phone2}</a>
+                                <div className="pt-1 flex-1">
+                                    <div className="text-sm font-medium text-slate-500 mb-3">Doradztwo techniczne i wyceny</div>
+                                    <div className="space-y-4">
+
+                                        {/* Numer 1 z pierwszym zdjęciem */}
+                                        <div className="flex items-center space-x-3">
+                                            <div className="relative flex-shrink-0">
+                                                <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 shadow-sm bg-white">
+                                                    <img src={imgOsoba1} alt="Doradca 1" className="w-full h-full object-cover" />
+                                                </div>
+                                                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border border-white rounded-full shadow-sm" title="Dostępny"></div>
+                                            </div>
+                                            <a href={`tel:+${CONTACT_INFO.phone1Clean}`} className="text-xl font-bold text-slate-900 hover:text-brand-primary transition-colors">
+                                                {CONTACT_INFO.phone1}
+                                            </a>
+                                        </div>
+
+                                        {/* Numer 2 z drugim zdjęciem */}
+                                        <div className="flex items-center space-x-3">
+                                            <div className="relative flex-shrink-0">
+                                                <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 shadow-sm bg-white">
+                                                    <img src={imgOsoba2} alt="Doradca 2" className="w-full h-full object-cover" />
+                                                </div>
+                                                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border border-white rounded-full shadow-sm" title="Dostępny"></div>
+                                            </div>
+                                            <a href={`tel:+${CONTACT_INFO.phone2Clean}`} className="text-xl font-bold text-slate-900 hover:text-brand-primary transition-colors">
+                                                {CONTACT_INFO.phone2}
+                                            </a>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
 
                             <div className="flex items-start">
-                                <div className="w-12 h-12 bg-brand-primary/10 rounded-full flex items-center justify-center text-brand-primary mr-4 flex-shrink-0">
+                                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center text-brand-primary mr-5 flex-shrink-0 shadow-sm border border-slate-100">
                                     <Mail size={24}/>
                                 </div>
-                                <div>
+                                <div className="pt-1">
                                     <div className="text-sm font-medium text-slate-500 mb-1">Adres e-mail</div>
                                     <a href={`mailto:${CONTACT_INFO.email}`} className="text-lg font-bold text-slate-900 hover:text-brand-primary transition-colors">{CONTACT_INFO.email}</a>
                                 </div>
                             </div>
 
                             <div className="flex items-start">
-                                <div className="w-12 h-12 bg-brand-primary/10 rounded-full flex items-center justify-center text-brand-primary mr-4 flex-shrink-0">
+                                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center text-brand-primary mr-5 flex-shrink-0 shadow-sm border border-slate-100">
                                     <MapPin size={24}/>
                                 </div>
-                                <div>
+                                <div className="pt-1">
                                     <div className="text-sm font-medium text-slate-500 mb-1">Siedziba firmy</div>
                                     <div className="text-lg font-bold text-slate-900">{CONTACT_INFO.address1}</div>
                                     <div className="text-lg font-bold text-slate-900">{CONTACT_INFO.address2}</div>
                                 </div>
                             </div>
 
-                            <div className="pt-6 border-t border-slate-200 mt-4">
-                                <div className="text-sm font-medium text-slate-500 mb-4">Znajdź nas w sieci</div>
+                            <div className="pt-8 border-t border-slate-200 mt-4">
+                                <div className="text-sm font-medium text-slate-500 mb-5">Znajdź nas w sieci</div>
                                 <div className="flex space-x-4">
-                                    <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-[#1877F2] hover:text-white hover:shadow-lg hover:shadow-[#1877F2]/30 transition-all transform hover:-translate-y-1" title="Facebook"><Facebook size={22}/></a>
-                                    <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white hover:shadow-lg hover:shadow-[#dc2743]/30 transition-all transform hover:-translate-y-1" title="Instagram"><Instagram size={22}/></a>
-                                    <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-black hover:text-white hover:shadow-lg transition-all transform hover:-translate-y-1" title="TikTok"><TikTokIcon size={22}/></a>
-                                    <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-[#FF0000] hover:text-white hover:shadow-lg hover:shadow-[#FF0000]/30 transition-all transform hover:-translate-y-1" title="YouTube"><Youtube size={22}/></a>
+                                    <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer"
+                                       className="w-12 h-12 rounded-full bg-[#1877F2] flex items-center justify-center text-white shadow-md shadow-[#1877F2]/20 hover:shadow-xl hover:shadow-[#1877F2]/40 transition-all duration-300 transform hover:-translate-y-1.5 hover:scale-110"
+                                       title="Facebook">
+                                        <Facebook size={22}/>
+                                    </a>
+                                    <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer"
+                                       className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] flex items-center justify-center text-white shadow-md shadow-[#dc2743]/20 hover:shadow-xl hover:shadow-[#dc2743]/40 transition-all duration-300 transform hover:-translate-y-1.5 hover:scale-110"
+                                       title="Instagram">
+                                        <Instagram size={22}/>
+                                    </a>
+                                    <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer"
+                                       className="w-12 h-12 rounded-full bg-black flex items-center justify-center text-white shadow-md shadow-black/20 hover:shadow-xl hover:shadow-black/40 transition-all duration-300 transform hover:-translate-y-1.5 hover:scale-110"
+                                       title="TikTok">
+                                        <TikTokIcon size={22}/>
+                                    </a>
+                                    <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noopener noreferrer"
+                                       className="w-12 h-12 rounded-full bg-[#FF0000] flex items-center justify-center text-white shadow-md shadow-[#FF0000]/20 hover:shadow-xl hover:shadow-[#FF0000]/40 transition-all duration-300 transform hover:-translate-y-1.5 hover:scale-110"
+                                       title="YouTube">
+                                        <Youtube size={22}/>
+                                    </a>
                                 </div>
                             </div>
                         </div>

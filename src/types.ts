@@ -19,7 +19,7 @@ export interface ProjectStats {
 
 export interface Project {
     id: number;
-    category: 'hydroizolacje' | 'malowanie' | 'gladzie';
+    category: 'hydroizolacje' | 'malowanie' | 'gladzie' | 'posadzki żywiczne';
     iconName: 'ShieldCheck' | 'PaintRoller' | 'Layers';
     title: string;
     location: string;

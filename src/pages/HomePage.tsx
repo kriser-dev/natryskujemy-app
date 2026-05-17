@@ -144,7 +144,11 @@ export default function HomePage() {
                             </div>
 
                             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.05] mb-6 tracking-tight">
-                                Hydroizolacje dachów, tarasów, balkonów
+                                Hydroizolacje
+                                <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r text-white">
+                                    Dachów Tarasów Balkonów
+                                </span>
+
                                 <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-cyan-300">
                                     system poliuretanowy, system zimny dach
                                 </span>
