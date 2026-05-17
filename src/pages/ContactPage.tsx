@@ -1,5 +1,5 @@
 import { useState, type SubmitEvent } from 'react';
-import { MapPin, CheckCircle2, PhoneCall, Mail, Send, Loader2 } from 'lucide-react';
+import { MapPin, CheckCircle2, PhoneCall, Mail, Send, Loader2, X } from 'lucide-react';
 import { Facebook, Instagram, TikTokIcon, Youtube } from '../components/Icons';
 import { SOCIAL_LINKS, CONTACT_INFO, TIMEOUTS } from '../config/constants';
 
@@ -10,6 +10,9 @@ import imgOsoba2 from '../assets/osoba2.webp';
 export default function ContactPage() {
     const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    // NOWY STAN DO PRZECHOWYWANIA POWIĘKSZONEGO ZDJĘCIA
+    const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
 
     const handleFormSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -76,7 +79,7 @@ export default function ContactPage() {
                                     <CheckCircle2 size={32}/>
                                 </div>
                                 <h4 className="text-2xl font-bold text-slate-900 mb-2">Dziękujemy za zapytanie!</h4>
-                                <p className="text-slate-600">Wiadomość została wysłana pomyślnie. Skontaktujemy się z Tobą wkorotce.</p>
+                                <p className="text-slate-600">Wiadomość została wysłana pomyślnie. Skontaktujemy się z Tobą wkrótce.</p>
                             </div>
                         )}
 
@@ -136,7 +139,6 @@ export default function ContactPage() {
                         <h3 className="text-xl font-bold text-slate-900 mb-8">Bezpośredni kontakt</h3>
                         <div className="space-y-8">
 
-                            {/* POPRAWIONA SEKCJA TELEFONU - IKONA + OSOBNE AWATARY DLA KAŻDEGO NUMERU */}
                             <div className="flex items-start">
                                 <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center text-brand-primary mr-5 flex-shrink-0 shadow-sm border border-slate-100">
                                     <PhoneCall size={24}/>
@@ -145,26 +147,34 @@ export default function ContactPage() {
                                     <div className="text-sm font-medium text-slate-500 mb-3">Doradztwo techniczne i wyceny</div>
                                     <div className="space-y-4">
 
-                                        {/* Numer 1 z pierwszym zdjęciem */}
+                                        {/* Numer 1 z KLIKALNYM pierwszym zdjęciem */}
                                         <div className="flex items-center space-x-3">
-                                            <div className="relative flex-shrink-0">
-                                                <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 shadow-sm bg-white">
-                                                    <img src={imgOsoba1} alt="Doradca 1" className="w-full h-full object-cover" />
+                                            <div
+                                                className="relative flex-shrink-0 cursor-pointer group"
+                                                onClick={() => setEnlargedImage(imgOsoba1)}
+                                                title="Kliknij, aby powiększyć zdjęcie"
+                                            >
+                                                <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 shadow-sm bg-white group-hover:ring-2 group-hover:ring-brand-primary/40 transition-all duration-300">
+                                                    <img src={imgOsoba1} alt="Doradca 1" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                                 </div>
-                                                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border border-white rounded-full shadow-sm" title="Dostępny"></div>
+                                                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border border-white rounded-full shadow-sm"></div>
                                             </div>
                                             <a href={`tel:+${CONTACT_INFO.phone1Clean}`} className="text-xl font-bold text-slate-900 hover:text-brand-primary transition-colors">
                                                 {CONTACT_INFO.phone1}
                                             </a>
                                         </div>
 
-                                        {/* Numer 2 z drugim zdjęciem */}
+                                        {/* Numer 2 z KLIKALNYM drugim zdjęciem */}
                                         <div className="flex items-center space-x-3">
-                                            <div className="relative flex-shrink-0">
-                                                <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 shadow-sm bg-white">
-                                                    <img src={imgOsoba2} alt="Doradca 2" className="w-full h-full object-cover" />
+                                            <div
+                                                className="relative flex-shrink-0 cursor-pointer group"
+                                                onClick={() => setEnlargedImage(imgOsoba2)}
+                                                title="Kliknij, aby powiększyć zdjęcie"
+                                            >
+                                                <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 shadow-sm bg-white group-hover:ring-2 group-hover:ring-brand-primary/40 transition-all duration-300">
+                                                    <img src={imgOsoba2} alt="Doradca 2" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                                 </div>
-                                                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border border-white rounded-full shadow-sm" title="Dostępny"></div>
+                                                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border border-white rounded-full shadow-sm"></div>
                                             </div>
                                             <a href={`tel:+${CONTACT_INFO.phone2Clean}`} className="text-xl font-bold text-slate-900 hover:text-brand-primary transition-colors">
                                                 {CONTACT_INFO.phone2}
@@ -225,6 +235,34 @@ export default function ContactPage() {
                     </div>
                 </div>
             </div>
+
+            {/* MODAL (LIGHTBOX) Z POWIĘKSZONYM ZDJĘCIEM */}
+            {enlargedImage && (
+                <div
+                    className="fixed inset-0 z-[110] flex items-center justify-center p-4"
+                    onClick={() => setEnlargedImage(null)}
+                >
+                    {/* Ciemne, rozmyte tło */}
+                    <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm animate-in fade-in duration-300"></div>
+
+                    {/* Okienko powiększonego zdjęcia */}
+                    <div
+                        className="relative z-10 animate-in zoom-in-95 duration-300 flex flex-col items-center"
+                        onClick={(e) => e.stopPropagation()} // Zapobiega zamknięciu, gdy klikniesz na same zdjęcie
+                    >
+                        <button
+                            onClick={() => setEnlargedImage(null)}
+                            className="absolute -top-12 right-0 md:-right-12 p-2 text-white/70 hover:text-white hover:rotate-90 transition-all duration-300"
+                        >
+                            <X size={32} />
+                        </button>
+
+                        <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden border-4 border-white shadow-2xl bg-white relative">
+                            <img src={enlargedImage} alt="Powiększone zdjęcie doradcy" className="w-full h-full object-cover" />
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
