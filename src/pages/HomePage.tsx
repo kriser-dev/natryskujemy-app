@@ -22,20 +22,32 @@ export default function HomePage() {
             const response = await fetch('/folder-reklamowy.pdf');
 
             // 1. Sprawdzenie czy serwer nie zgłosił twardego błędu (np. 404, 500)
-            if (!response.ok) throw new Error('Błąd HTTP - serwer odrzucił żądanie');
+            if (!response.ok) {
+                console.error('Błąd pobierania pliku: Błąd HTTP - serwer odrzucił żądanie');
+                setDownloadStatus('error');
+                setTimeout(() => setDownloadStatus('idle'), 5000);
+                return; // <-- Przerywamy funkcję, nie rzucamy błędu
+            }
 
             // 2. KRYTYCZNA POPRAWKA: Sprawdzamy typ (Content-Type) zwróconego pliku
-            // Jeśli to HTML, to znaczy, że serwer Reacta podłożył nam stronę główną zamiast brakującego PDFa
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('text/html')) {
-                throw new Error('Zamiast pliku PDF serwer zwrócił stronę HTML (brak pliku)');
+                console.error('Błąd pobierania pliku: Zamiast pliku PDF serwer zwrócił stronę HTML (brak pliku)');
+                setDownloadStatus('error');
+                setTimeout(() => setDownloadStatus('idle'), 5000);
+                return; // <-- Przerywamy funkcję
             }
 
             // Dekodujemy plik
             const blob = await response.blob();
 
             // 3. Dodatkowe zabezpieczenie przed pustymi plikami (0 bajtów)
-            if (blob.size === 0) throw new Error('Pobrany plik jest pusty');
+            if (blob.size === 0) {
+                console.error('Błąd pobierania pliku: Pobrany plik jest pusty');
+                setDownloadStatus('error');
+                setTimeout(() => setDownloadStatus('idle'), 5000);
+                return; // <-- Przerywamy funkcję
+            }
 
             // Wymuszamy pobranie zweryfikowanego pliku
             const url = window.URL.createObjectURL(blob);
@@ -55,12 +67,13 @@ export default function HomePage() {
             setTimeout(() => setDownloadStatus('idle'), 3000);
 
         } catch (error: unknown) {
+            // Blok catch wykona się TERAZ TYLKO w przypadku całkowitego braku sieci
+            // (np. gdy użytkownik straci internet w trakcie pobierania)
             if (error instanceof Error) {
-                console.error('Błąd pobierania pliku:', error.message);
+                console.error('Krytyczny błąd sieciowy pobierania pliku:', error.message);
             } else {
-                console.error('Błąd pobierania pliku:', error);
+                console.error('Krytyczny błąd sieciowy pobierania pliku:', error);
             }
-            // Pokazujemy błąd (czerwony przycisk) i blokujemy pobranie śmieciowego pliku
             setDownloadStatus('error');
             setTimeout(() => setDownloadStatus('idle'), 5000);
         }

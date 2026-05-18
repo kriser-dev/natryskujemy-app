@@ -1,87 +1,53 @@
-import { useState, type SubmitEvent, type ReactNode } from 'react';
-import { ShieldCheck, PaintRoller, Layers, Droplets, ArrowRight, CheckCircle2, X, Send, Loader2, Download, type LucideIcon } from 'lucide-react';
+import { useState, type ReactNode, type MouseEvent } from 'react';
+import { ShieldCheck, PaintRoller, Layers, Droplets, ArrowRight, CheckCircle2, X, Loader2, Download, AlertCircle, type LucideIcon } from 'lucide-react';
+import { useAppContext } from '../context/useAppContext';
 
 import imgUsluga1 from '../assets/usluga-dach.webp';
 import imgUsluga2 from '../assets/usluga-malowanie.webp';
 import imgUsluga3 from '../assets/usluga-gladzie.webp';
 import imgUsluga4 from '../assets/usluga-posadzki.webp';
 
-// --- MINI-KOMPONENT FORMULARZA (ANKIETY) ---
-const QuickSurveyForm = ({ serviceName, placeholder }: { serviceName: string, placeholder: string }) => {
-    const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+// --- MINI-SEKCJA PRZEJŚCIA DO FORMULARZA ---
+const QuickSurveyForm = ({ serviceName }: { serviceName: string, placeholder?: string }) => {
+    // 1. Pobieramy funkcję nawigacji z Twojego globalnego kontekstu (tak samo jak w HomePage)
+    const { navigateTo } = useAppContext();
 
-    const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setStatus('submitting');
+    const handleGoToForm = () => {
+        // 2. Przekierowujemy użytkownika do podstrony 'form' (lub 'formularz' - zależnie od nazwy w Twoim routerze)
+        navigateTo('form');
 
-        const formData = new FormData(e.currentTarget);
-        const data = {
-            serviceType: formData.get('serviceType'),
-            email: formData.get('email'),
-            area: formData.get('area'),
-            message: formData.get('description'),
-        };
-
-        try {
-            const response = await fetch('http://localhost:3000/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                setStatus('success');
-            } else {
-                console.error('Błąd serwera podczas wysyłania');
-                setStatus('error');
-                setTimeout(() => setStatus('idle'), 4000);
-            }
-        } catch (error) {
-            console.error('Błąd połączenia:', error);
-            setStatus('error');
-            setTimeout(() => setStatus('idle'), 4000);
-        }
+        // Opcjonalnie: Możesz też zapisać wybraną usługę w localStorage,
+        // aby nowy formularz od razu wiedział, który kafel kliknął użytkownik:
+        localStorage.setItem('selectedService', serviceName);
     };
 
-    if (status === 'success') {
-        return (
-            <div className="mt-8 bg-green-50 rounded-2xl p-8 border border-green-100 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-300">
-                <div className="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mb-4"><CheckCircle2 size={32}/></div>
-                <h4 className="text-xl font-bold text-slate-900 mb-2">Świetnie! Zgłoszenie przyjęte.</h4>
-                <p className="text-slate-600 text-sm">Otrzymaliśmy wstępne informacje o Twoim obiekcie. Nasi inżynierowie skontaktują się z Tobą najszybciej jak to możliwe.</p>
-            </div>
-        );
-    }
-
     return (
+        // Usunąłem stąd klasy centrujące (items-center, text-center)
         <div className="mt-6 rounded-2xl p-6 sm:p-8 border relative overflow-hidden transition-all bg-brand-primary/5 border-brand-primary/10">
             <div className="relative z-10">
-                <div className="flex items-center mb-2">
+
+                {/* ZMIANA 1: justify-start wymusza wyrównanie nagłówka do lewej */}
+                <div className="flex items-center justify-start mb-3">
                     <div className="w-2 h-2 rounded-full mr-3 animate-pulse bg-brand-primary"></div>
-                    <h4 className="text-lg sm:text-xl font-bold text-slate-900">Szybka wycena: {serviceName}</h4>
+                    <h4 className="text-lg sm:text-xl font-bold text-slate-900">Indywidualna oferta</h4>
                 </div>
-                <p className="text-slate-600 text-sm mb-6">Zostaw e-mail i krótki opis sytuacji. Skontaktujemy się, by ocenić, czy i jak możemy pomóc.</p>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <input type="hidden" name="serviceType" value={serviceName} />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <input type="email" name="email" required placeholder="Twój adres e-mail" disabled={status === 'submitting'} className="w-full px-4 py-3 rounded-xl border border-white focus:ring-2 outline-none transition-all shadow-sm focus:border-brand-primary focus:ring-brand-primary/20 disabled:opacity-50" />
-                        <input type="text" name="area" placeholder="Szacunkowy metraż (m²)" disabled={status === 'submitting'} className="w-full px-4 py-3 rounded-xl border border-white focus:ring-2 outline-none transition-all shadow-sm focus:border-brand-primary focus:ring-brand-primary/20 disabled:opacity-50" />
-                    </div>
-                    <div>
-                        <textarea name="description" required rows={2} placeholder={placeholder} disabled={status === 'submitting'} className="w-full px-4 py-3 rounded-xl border border-white focus:ring-2 outline-none transition-all shadow-sm resize-none focus:border-brand-primary focus:ring-brand-primary/20 disabled:opacity-50"></textarea>
-                    </div>
+                {/* ZMIANA 2: text-left gwarantuje wyrównanie tekstu do lewej */}
+                <p className="text-slate-600 text-sm sm:text-base mb-6 leading-relaxed text-left">
+                    Opisz sytuację — sprawdzimy, czy ten system ma sens dla Twojego obiektu.
+                </p>
 
-                    {status === 'error' && (
-                        <div className="bg-red-50 text-red-600 text-sm p-3 rounded-xl border border-red-100 text-center animate-in fade-in">
-                            Błąd serwera. Spróbuj ponownie lub użyj zakładki Kontakt.
-                        </div>
-                    )}
-
-                    <button type="submit" disabled={status === 'submitting'} className="w-full sm:w-auto text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-md flex items-center justify-center group disabled:opacity-70 bg-brand-primary hover:bg-brand-dark">
-                        {status === 'submitting' ? <><Loader2 className="animate-spin mr-2" size={18}/> Wysyłanie...</> : <>Przekaż do wyceny <Send size={18} className="ml-2 group-hover:translate-x-1 transition-transform"/></>}
+                {/* ZMIANA 3: Przycisk opakowany w div z flex i justify-center, by był idealnie na środku */}
+                <div className="flex justify-center w-full">
+                    <button
+                        onClick={handleGoToForm}
+                        className="w-full sm:w-auto text-white px-10 py-4 rounded-xl font-bold transition-all shadow-md flex items-center justify-center group bg-brand-primary hover:bg-brand-dark transform active:scale-95 text-base"
+                    >
+                        Przejdź do formularza
+                        <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform"/>
                     </button>
-                </form>
+                </div>
+
             </div>
             <div className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full blur-3xl pointer-events-none opacity-50 bg-brand-primary/20"></div>
         </div>
@@ -106,7 +72,9 @@ interface BaseServiceCardProps {
     modalFeatures: string[];
     formServiceName: string;
     formPlaceholder: string;
-    caseStudyFileName: string; // <-- NOWA PROP NA NAZWĘ PLIKU CASE STUDY
+    caseStudyFileName: string;
+    modalFormText: ReactNode;
+    preDownloadText?: ReactNode;
 }
 
 const BaseServiceCard = (props: BaseServiceCardProps) => {
@@ -114,22 +82,47 @@ const BaseServiceCard = (props: BaseServiceCardProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const Icon = props.frontIcon;
 
-    // NOWE STANY DLA POBIERANIA CASE STUDY
     const [csEmail, setCsEmail] = useState('');
     const [csStatus, setCsStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
     const isEmailValid = csEmail.trim().includes('@') && csEmail.trim().length > 4;
 
-    const handleCaseStudyDownload = async (e: React.MouseEvent) => {
+    const handleCaseStudyDownload = async (e: MouseEvent) => {
         e.preventDefault();
         if (!isEmailValid) return;
 
         setCsStatus('loading');
         try {
             const response = await fetch(`/${props.caseStudyFileName}`);
-            if (!response.ok) throw new Error('Błąd pobierania pliku');
+
+            // 1. Sprawdzenie czy serwer nie zwrócił błędu HTTP
+            if (!response.ok) {
+                console.error('Błąd pobierania Case Study: Błąd HTTP - serwer odrzucił żądanie');
+                setCsStatus('error');
+                setTimeout(() => setCsStatus('idle'), 5000);
+                return; // <-- Przerywamy działanie funkcji
+            }
+
+            // 2. Sprawdzenie typu pliku (czy to nie podmieniony HTML strony głównej)
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('text/html')) {
+                console.error('Błąd pobierania Case Study: Zamiast pliku PDF serwer zwrócił stronę HTML');
+                setCsStatus('error');
+                setTimeout(() => setCsStatus('idle'), 5000);
+                return; // <-- Przerywamy działanie funkcji
+            }
 
             const blob = await response.blob();
+
+            // 3. Sprawdzenie czy plik nie jest pusty (0 bajtów)
+            if (blob.size === 0) {
+                console.error('Błąd pobierania Case Study: Pobrany plik jest pusty');
+                setCsStatus('error');
+                setTimeout(() => setCsStatus('idle'), 5000);
+                return; // <-- Przerywamy działanie funkcji
+            }
+
+            // Wymuszenie pobrania pliku w przeglądarce
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.style.display = 'none';
@@ -138,13 +131,18 @@ const BaseServiceCard = (props: BaseServiceCardProps) => {
             document.body.appendChild(a);
             a.click();
 
+            // Czyszczenie pamięci podręcznej przeglądarki
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
+
+            // Sukces
             setCsStatus('success');
+            setTimeout(() => setCsStatus('idle'), 3000);
         } catch (err) {
-            console.error(err);
+            // Blok catch wykona się TYLKO w awaryjnej sytuacji sieciowej (np. całkowity brak internetu u klienta)
+            console.error('Błąd połączenia sieciowego podczas pobierania Case Study:', err);
             setCsStatus('error');
-            setTimeout(() => setCsStatus('idle'), 4000);
+            setTimeout(() => setCsStatus('idle'), 5000);
         }
     };
 
@@ -228,15 +226,21 @@ const BaseServiceCard = (props: BaseServiceCardProps) => {
                                     </ul>
                                 </div>
 
-                                {/* NOWA SEKCJA: FORMULARZ PRZED WYCENĄ - POBIERANIE CASE STUDY */}
+                                {props.preDownloadText && (
+                                    <div className="mt-6 text-slate-600 text-[15px] leading-relaxed border-l-[3px] border-brand-primary/40 pl-4 py-1">
+                                        {props.preDownloadText}
+                                    </div>
+                                )}
+
+                                {/* FORMULARZ PRZED WYCENĄ - POBIERANIE CASE STUDY Z OBSŁUGĄ BŁĘDÓW */}
                                 <div className="mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-200/80 shadow-inner">
                                     <div className="flex items-start space-x-3.5">
                                         <div className="w-11 h-11 bg-brand-primary/10 text-brand-primary rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
                                             <Download size={22} />
                                         </div>
                                         <div>
-                                            <h4 className="text-base font-bold text-slate-900">Pobierz bezpłatne Case Study (PDF)</h4>
-                                            <p className="text-xs text-slate-500 leading-normal mt-0.5">Wpisz e-mail, aby odblokować dokumentację techniczną i zdjęcia z przykładowej realizacji tego systemu.</p>
+                                            <h4 className="text-base font-bold text-slate-900">Zobacz analizę problemów i możliwości ich usunięcia</h4>
+                                            <p className="text-xs text-slate-500 leading-normal mt-0.5">Wpisz e-mail, aby pobrać plik PDF.</p>
                                         </div>
                                     </div>
                                     <div className="flex flex-col sm:flex-row gap-3 mt-4">
@@ -251,32 +255,30 @@ const BaseServiceCard = (props: BaseServiceCardProps) => {
                                             onClick={handleCaseStudyDownload}
                                             disabled={!isEmailValid || csStatus === 'loading'}
                                             className={`px-6 py-3 rounded-xl font-bold text-sm flex items-center justify-center transition-all shadow-md group disabled:opacity-50 disabled:cursor-not-allowed ${
-                                                csStatus === 'success' ? 'bg-green-600 text-white' : 'bg-brand-primary hover:bg-brand-dark text-white'
+                                                csStatus === 'success' ? 'bg-green-600 text-white' :
+                                                    csStatus === 'error' ? 'bg-red-600 text-white shadow-red-600/20' :
+                                                        'bg-brand-primary hover:bg-brand-dark text-white'
                                             }`}
                                         >
                                             {csStatus === 'loading' ? (
                                                 <><Loader2 className="animate-spin mr-2" size={16}/> Pobieranie...</>
                                             ) : csStatus === 'success' ? (
                                                 <><CheckCircle2 className="mr-2" size={16}/> Pobrano pomyślnie!</>
+                                            ) : csStatus === 'error' ? (
+                                                <><AlertCircle className="mr-2" size={16}/> Brak pliku</>
                                             ) : (
                                                 <>Pobierz materiały <ArrowRight size={16} className="ml-2 group-hover:translate-x-0.5 transition-transform"/></>
                                             )}
                                         </button>
                                     </div>
-                                    {csStatus === 'error' && (
-                                        <p className="text-xs text-red-600 mt-2 text-center font-medium">Plik PDF dla tej usługi jest chwilowo niedostępny na serwerze.</p>
-                                    )}
                                 </div>
 
-                                {/* „PÓŹNIEJ TROCHĘ TEKSTU” */}
+                                {/* „PÓŹNIEJ TROCHĘ TEKSTU” - TERAZ POBIERANE DYNAMICZNIE Z PROPSA */}
                                 <div className="mt-8 pt-6 border-t border-slate-100">
-                                    <h4 className="text-lg font-bold text-slate-900 mb-2">Potrzebujesz indywidualnej wyceny dla swojego obiektu?</h4>
-                                    <p className="text-slate-600 text-sm leading-relaxed">
-                                        Każda specyfika architektoniczna – czy to dach papowy, hala magazynowa czy podłoże betonowe – wymaga unikalnego podejścia i doboru odpowiedniej grubości systemu ochronnego. Jeżeli chcesz, aby nasi inżynierowie bezpłatnie przeanalizowali parametry Twojej inwestycji i przygotowali precyzyjną wycenę, wypełnij poniższy krótki formularz kontaktowy.
-                                    </p>
+                                    {props.modalFormText}
                                 </div>
 
-                                <QuickSurveyForm serviceName={props.formServiceName} placeholder={props.formPlaceholder} />
+                                <QuickSurveyForm serviceName={props.formServiceName} />
                             </div>
                         </div>
                     </div>
@@ -301,12 +303,47 @@ export const ServiceCard1 = () => (
         backDescription="Tworzymy w 100% szczelne, bezspoinowe powłoki chroniące przed wodą. Idealne do naprawy przeciekających dachów płaskich."
         backList={['Brak szwów i łączeń (miejsc przecieków)', 'Odporność na mrozy i UV', 'Błyskawiczny czas realizacji']}
         modalTitle="Systemy Hydroizolacji Płynnych"
-        modalQuote="Najwyższa forma ochrony dachu to taka, która nie posiada ani jednego słabego punktu w postaci zgrzewu czy zakładki."
-        modalDescription={<p>Nasza technologia opiera się na nowoczesnych membranach płynnych, które po aplikacji tworzą jednolitą, „gumową” powłokę na całej powierzchni dachu lub tarasu.</p>}
-        modalFeatures={['100% bezspoinowość', 'Refleksyjność (nie nagrzewa się)', 'Do 25 lat trwałości', 'Odporność na stojącą wodę']}
-        formServiceName="Hydroizolacje"
+        modalQuote="Pamiętaj, dach nie przecieka wtedy, gdy nie ma gdzie puścić wody.”"
+        modalDescription={<p>Zastosuj u siebie systemy hydroizolacji płynnych dla dachów, tarasów i obiektów technicznych, gdzie liczy się trwałość, szczelność i ograniczenie ryzyka kosztownych awarii.</p>}
+        modalFeatures={['100% bezspoinowości', 'Odporność na stojącą wodę', 'Do 25 lat trwałości', 'Refleksyjność i niższe nagrzewanie dachu', 'Możliwość aplikacji bez zrywania starego pokrycia', 'Krótsze wyłączenie obiektu z użytkowania']}
+        formServiceName="Hydroizolacje Dachów i Tarasów"
         formPlaceholder="Opisz obiekt (np. przeciekający dach papowy, woda stoi po opadach, zależy na czasie...)"
         caseStudyFileName="case-study-hydroizolacje.pdf"
+        preDownloadText={
+            <p>
+                Nasza technologia opiera się na nowoczesnych membranach płynnych, które po aplikacji tworzą jednolitą, „gumową” powłokę na całej powierzchni dachu lub tarasu. Jest to nowatorska technologia, opracowana dla klientów, którzy chcą rozsądnie gospodarować budżetem.
+            </p>
+        }
+        modalFormText={
+            <div className="space-y-4">
+                <h4 className="text-lg font-bold text-slate-900">Większość problemów z przeciekami nie wynika z samego materiału.</h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                    Woda najczęściej nie pojawia się „na środku dachu”. Problemy zaczynają się:
+                </p>
+                <ul className="space-y-1.5 ml-2">
+                    {['na łączeniach,', 'zakładkach,', 'obróbkach,', 'przejściach technicznych,', 'miejscach pracy konstrukcji,', 'źle wykonanych naprawach punktowych.'].map((item, i) => (
+                        <li key={i} className="flex items-start text-sm text-slate-600">
+                            <span className="text-brand-primary mr-2 font-bold">•</span> {item}
+                        </li>
+                    ))}
+                </ul>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                    Klasyczne systemy zgrzewane często po latach stają się źródłem kolejnych awarii. Jeśli opiekujesz się dachem lub projektujesz dachy, na pewno znasz to zagrożenie z praktyki.
+                </p>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">
+                    System membran płynnych eliminuje ten problem, tworząc jednolitą, elastyczną powłokę bez spoin i słabych punktów.
+                </p>
+
+                <h5 className="text-base font-bold text-slate-900 pt-2">Kto najbardziej skorzysta z tego rozwiązania?</h5>
+                <ul className="space-y-1.5 ml-2">
+                    {['zarządcy nieruchomości,', 'wspólnoty mieszkaniowe,', 'obiekty przemysłowe,', 'obiekty publiczne,', 'inwestorzy modernizujący istniejące pokrycia.'].map((item, i) => (
+                        <li key={i} className="flex items-start text-sm text-slate-600">
+                            <CheckCircle2 size={16} className="text-green-500 mr-2 mt-0.5 flex-shrink-0"/> {item}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        }
     />
 );
 
@@ -328,6 +365,14 @@ export const ServiceCard2 = () => (
         formServiceName="Malowanie Natryskowe"
         formPlaceholder="Opisz obiekt (np. hala magazynowa, malowanie ścian i sufitu wewnątrz, szukamy wolnego terminu...)"
         caseStudyFileName="case-study-malowanie.pdf"
+        modalFormText={
+            <>
+                <h4 className="text-lg font-bold text-slate-900 mb-2">Szukasz wykonawcy do malowania wielkopowierzchniowego?</h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                    Hale przemysłowe, magazyny czy wysokie elewacje wymagają idealnego doboru farb pod kątem warunków eksploatacji oraz odpowiedniego ciśnienia natrysku. Zostaw nam podstawowe informacje o metrażu oraz przeznaczeniu budynku, aby otrzymać darmowy kosztorys.
+                </p>
+            </>
+        }
     />
 );
 
@@ -349,6 +394,14 @@ export const ServiceCard3 = () => (
         formServiceName="Gładzie Polimerowe"
         formPlaceholder="Opisz obiekt (np. nowe biura, ściany działowe z karton-gipsu, wysoki standard wykończenia...)"
         caseStudyFileName="case-study-gladzie.pdf"
+        modalFormText={
+            <>
+                <h4 className="text-lg font-bold text-slate-900 mb-2">Chcesz uzyskać idealnie gładkie ściany w standardzie Q3 lub Q4?</h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                    Maszynowe nakładanie gładzi polimerowych to gwarancja idealnej powtarzalności i braku fal na ścianach pod światło. Napisz nam, jaki jest aktualny stan tynków w Twoim budynku oraz szacowany metraż, aby nasi specjaliści mogli wycenić realizację.
+                </p>
+            </>
+        }
     />
 );
 
@@ -362,7 +415,7 @@ export const ServiceCard4 = () => (
         backTitle="Posadzki Żywiczne"
         backSubtitle="Trwałość i estetyka bez kompromisów."
         backDescription="Tworzymy niezwykle odporne posadzki epoksydowe i poliuretanowe, idealne do hal, magazynów oraz nowoczesnych wnętrz."
-        backList={['Wydajność do 1000m² dziennie', 'Doskonałe krycie detali i zakamarków', 'Oszczędność materiału do 20%']}
+        backList={['Wysoka odporność mechaniczna', 'Łatwość w utrzymaniu czystości', 'Brak spoin i łączeń']}
         modalTitle="Systemy Posadzek Żywicznych"
         modalQuote="Posadzka, która zniesie największe obciążenia, zachowując przy tym nienaganny wygląd przez lata."
         modalDescription={<p>Aplikujemy profesjonalne posadzki żywiczne, precyzyjnie dopasowując grubość i właściwości systemu do specyfiki danego obiektu – od intensywnie użytkowanych hal produkcyjnych po estetyczne garaże i przestrzenie komercyjne.</p>}
@@ -370,5 +423,13 @@ export const ServiceCard4 = () => (
         formServiceName="Posadzki Żywiczne"
         formPlaceholder="Opisz obiekt (np. hala produkcyjna 200m2, stary beton, poszukujemy odporności chemicznej...)"
         caseStudyFileName="case-study-posadzki.pdf"
+        modalFormText={
+            <>
+                <h4 className="text-lg font-bold text-slate-900 mb-2">Planujesz wykonanie odpornej posadzki epoksydowej lub poliuretanowej?</h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                    W przypadku żywic kluczowe jest określenie obciążeń mechanicznych oraz stanu podłoża betonowego. Zostaw nam wiadomość o metrażu oraz specyfice działalności (np. warsztat, magazyn, dom), a my przygotujemy dopasowany kosztorys systemu posadzkowego.
+                </p>
+            </>
+        }
     />
 );

@@ -53,6 +53,7 @@ const HomePage = lazy(() => import('./pages/HomePage'));
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ProcessPage = lazy(() => import('./pages/ProcessPage'));
+const FormPage = lazy(() => import('./pages/FormPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const CookiesPolicyPage = lazy(() => import('./pages/CookiesPolicyPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
@@ -312,12 +313,13 @@ const AppContent = () => {
                     {currentPage === 'home' && <HomePage/>}
                     {currentPage === 'portfolio' && <PortfolioPage/>}
                     {currentPage === 'about' && <AboutPage/>}
+                    {currentPage === 'form' && <FormPage/>}
                     {currentPage === 'process' && <ProcessPage/>}
                     {currentPage === 'privacy' && <PrivacyPolicyPage/>}
                     {currentPage === 'contact' && <ContactPage/>}
                     {currentPage === 'cookies' && <CookiesPolicyPage/>}
 
-                    {!['home', 'portfolio', 'about', 'process', 'privacy', 'contact', 'cookies'].includes(currentPage) &&
+                    {!['home', 'portfolio', 'about', 'form', 'process', 'privacy', 'contact', 'cookies'].includes(currentPage) &&
                         <NotFoundPage/>}
                 </Suspense>
             </main>
