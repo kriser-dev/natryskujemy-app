@@ -137,7 +137,9 @@ export default function HomePage() {
 
                 <div className="relative z-20 w-full">
                     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-                        <div className="max-w-5xl">
+                        {/* ZMIANA 1: Dodane mx-auto, text-center i flex do wyśrodkowania bloku */}
+                        <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
+
                             <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 text-blue-100 font-medium text-sm mb-6 border border-white/20 backdrop-blur-sm">
                                 <MapPin size={16} className="mr-2"/>
                                 Działamy na terenie całego Śląska
@@ -154,11 +156,13 @@ export default function HomePage() {
                                 </span>
                             </h1>
 
-                            <p className="max-w-2xl text-lg md:text-xl text-slate-200 mb-10 leading-relaxed font-medium">
+                            {/* ZMIANA 2: Dodane mx-auto, aby paragraf ustawił się na środku */}
+                            <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-200 mb-10 leading-relaxed font-medium">
                                 Pracujemy dla zarządców, spółdzielni, wspólnot i firm, które potrzebują trwałego rozwiązania, dobrej organizacji pracy i odpowiedzialności za efekt końcowy.
                             </p>
 
-                            <div className="flex flex-col sm:flex-row gap-4">
+                            {/* ZMIANA 3: Dodane justify-center, aby 3 przyciski ułożyły się na środku */}
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                 <a
                                     href="/kontakt"
                                     onClick={(e) => {
@@ -222,9 +226,9 @@ export default function HomePage() {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
                         <ServiceCard1/>
+                        <ServiceCard4/>
                         <ServiceCard2/>
                         <ServiceCard3/>
-                        <ServiceCard4/>
                     </div>
                 </div>
             </section>

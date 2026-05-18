@@ -1,10 +1,10 @@
 import { useState, type SubmitEvent, type ReactNode } from 'react';
-import { ShieldCheck, PaintRoller, Layers, Droplets, ArrowRight, CheckCircle2, X, Send, Loader2, type LucideIcon } from 'lucide-react';
+import { ShieldCheck, PaintRoller, Layers, Droplets, ArrowRight, CheckCircle2, X, Send, Loader2, Download, type LucideIcon } from 'lucide-react';
 
 import imgUsluga1 from '../assets/usluga-dach.webp';
 import imgUsluga2 from '../assets/usluga-malowanie.webp';
 import imgUsluga3 from '../assets/usluga-gladzie.webp';
-import imgUsluga4 from '../assets/usluga-posadzki.webp'; // <-- IMPORT ZDJĘCIA NOWEJ USŁUGI
+import imgUsluga4 from '../assets/usluga-posadzki.webp';
 
 // --- MINI-KOMPONENT FORMULARZA (ANKIETY) ---
 const QuickSurveyForm = ({ serviceName, placeholder }: { serviceName: string, placeholder: string }) => {
@@ -45,7 +45,7 @@ const QuickSurveyForm = ({ serviceName, placeholder }: { serviceName: string, pl
 
     if (status === 'success') {
         return (
-            <div className="mt-10 bg-green-50 rounded-2xl p-8 border border-green-100 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-300">
+            <div className="mt-8 bg-green-50 rounded-2xl p-8 border border-green-100 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-300">
                 <div className="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mb-4"><CheckCircle2 size={32}/></div>
                 <h4 className="text-xl font-bold text-slate-900 mb-2">Świetnie! Zgłoszenie przyjęte.</h4>
                 <p className="text-slate-600 text-sm">Otrzymaliśmy wstępne informacje o Twoim obiekcie. Nasi inżynierowie skontaktują się z Tobą najszybciej jak to możliwe.</p>
@@ -54,7 +54,7 @@ const QuickSurveyForm = ({ serviceName, placeholder }: { serviceName: string, pl
     }
 
     return (
-        <div className="mt-10 rounded-2xl p-6 sm:p-8 border relative overflow-hidden transition-all bg-brand-primary/5 border-brand-primary/10">
+        <div className="mt-6 rounded-2xl p-6 sm:p-8 border relative overflow-hidden transition-all bg-brand-primary/5 border-brand-primary/10">
             <div className="relative z-10">
                 <div className="flex items-center mb-2">
                     <div className="w-2 h-2 rounded-full mr-3 animate-pulse bg-brand-primary"></div>
@@ -106,12 +106,47 @@ interface BaseServiceCardProps {
     modalFeatures: string[];
     formServiceName: string;
     formPlaceholder: string;
+    caseStudyFileName: string; // <-- NOWA PROP NA NAZWĘ PLIKU CASE STUDY
 }
 
 const BaseServiceCard = (props: BaseServiceCardProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const Icon = props.frontIcon;
+
+    // NOWE STANY DLA POBIERANIA CASE STUDY
+    const [csEmail, setCsEmail] = useState('');
+    const [csStatus, setCsStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+    const isEmailValid = csEmail.trim().includes('@') && csEmail.trim().length > 4;
+
+    const handleCaseStudyDownload = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (!isEmailValid) return;
+
+        setCsStatus('loading');
+        try {
+            const response = await fetch(`/${props.caseStudyFileName}`);
+            if (!response.ok) throw new Error('Błąd pobierania pliku');
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = props.caseStudyFileName;
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            setCsStatus('success');
+        } catch (err) {
+            console.error(err);
+            setCsStatus('error');
+            setTimeout(() => setCsStatus('idle'), 4000);
+        }
+    };
 
     const backBgClass = props.backTheme === 'primary' ? 'bg-brand-primary text-white' : 'bg-slate-800 text-white border-b-4 border-brand-primary';
     const backSuperTitleClass = props.backTheme === 'primary' ? 'text-cyan-200' : 'text-slate-400';
@@ -169,11 +204,11 @@ const BaseServiceCard = (props: BaseServiceCardProps) => {
 
             {/* MODAL */}
             {isModalOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6" onClick={() => setIsModalOpen(false)}>
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6" onClick={() => { setIsModalOpen(false); setCsEmail(''); setCsStatus('idle'); }}>
                     <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-md animate-in fade-in duration-300"></div>
                     <div className="relative bg-white rounded-[2rem] w-full max-w-3xl max-h-[85vh] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300 border border-slate-100" onClick={(e) => e.stopPropagation()}>
                         <div className="h-2 w-full bg-brand-primary"></div>
-                        <button onClick={() => setIsModalOpen(false)} className="absolute top-6 right-6 z-20 p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full transition-all hover:rotate-90"><X size={24} /></button>
+                        <button onClick={() => { setIsModalOpen(false); setCsEmail(''); setCsStatus('idle'); }} className="absolute top-6 right-6 z-20 p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full transition-all hover:rotate-90"><X size={24} /></button>
 
                         <div className="overflow-y-auto overflow-x-hidden max-h-[calc(85vh-8px)] p-8 sm:p-12 relative">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 rounded-full -mr-32 -mt-32 blur-3xl pointer-events-none"></div>
@@ -192,6 +227,55 @@ const BaseServiceCard = (props: BaseServiceCardProps) => {
                                         ))}
                                     </ul>
                                 </div>
+
+                                {/* NOWA SEKCJA: FORMULARZ PRZED WYCENĄ - POBIERANIE CASE STUDY */}
+                                <div className="mt-8 p-6 bg-slate-50 rounded-2xl border border-slate-200/80 shadow-inner">
+                                    <div className="flex items-start space-x-3.5">
+                                        <div className="w-11 h-11 bg-brand-primary/10 text-brand-primary rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
+                                            <Download size={22} />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-base font-bold text-slate-900">Pobierz bezpłatne Case Study (PDF)</h4>
+                                            <p className="text-xs text-slate-500 leading-normal mt-0.5">Wpisz e-mail, aby odblokować dokumentację techniczną i zdjęcia z przykładowej realizacji tego systemu.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                                        <input
+                                            type="email"
+                                            placeholder="Twój adres e-mail"
+                                            value={csEmail}
+                                            onChange={(e) => setCsEmail(e.target.value)}
+                                            className="flex-1 px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary text-sm transition-all"
+                                        />
+                                        <button
+                                            onClick={handleCaseStudyDownload}
+                                            disabled={!isEmailValid || csStatus === 'loading'}
+                                            className={`px-6 py-3 rounded-xl font-bold text-sm flex items-center justify-center transition-all shadow-md group disabled:opacity-50 disabled:cursor-not-allowed ${
+                                                csStatus === 'success' ? 'bg-green-600 text-white' : 'bg-brand-primary hover:bg-brand-dark text-white'
+                                            }`}
+                                        >
+                                            {csStatus === 'loading' ? (
+                                                <><Loader2 className="animate-spin mr-2" size={16}/> Pobieranie...</>
+                                            ) : csStatus === 'success' ? (
+                                                <><CheckCircle2 className="mr-2" size={16}/> Pobrano pomyślnie!</>
+                                            ) : (
+                                                <>Pobierz materiały <ArrowRight size={16} className="ml-2 group-hover:translate-x-0.5 transition-transform"/></>
+                                            )}
+                                        </button>
+                                    </div>
+                                    {csStatus === 'error' && (
+                                        <p className="text-xs text-red-600 mt-2 text-center font-medium">Plik PDF dla tej usługi jest chwilowo niedostępny na serwerze.</p>
+                                    )}
+                                </div>
+
+                                {/* „PÓŹNIEJ TROCHĘ TEKSTU” */}
+                                <div className="mt-8 pt-6 border-t border-slate-100">
+                                    <h4 className="text-lg font-bold text-slate-900 mb-2">Potrzebujesz indywidualnej wyceny dla swojego obiektu?</h4>
+                                    <p className="text-slate-600 text-sm leading-relaxed">
+                                        Każda specyfika architektoniczna – czy to dach papowy, hala magazynowa czy podłoże betonowe – wymaga unikalnego podejścia i doboru odpowiedniej grubości systemu ochronnego. Jeżeli chcesz, aby nasi inżynierowie bezpłatnie przeanalizowali parametry Twojej inwestycji i przygotowali precyzyjną wycenę, wypełnij poniższy krótki formularz kontaktowy.
+                                    </p>
+                                </div>
+
                                 <QuickSurveyForm serviceName={props.formServiceName} placeholder={props.formPlaceholder} />
                             </div>
                         </div>
@@ -209,26 +293,82 @@ export const ServiceCard1 = () => (
         frontImage={imgUsluga1}
         frontTag="Główna Specjalizacja"
         frontIcon={ShieldCheck}
-        frontTitle="Hydroizolacje Dachów i Tarasów" frontList={['- Dachy płaskie pokryte papą, pianą PUR, blachą', '- Tarasy jako hydroizolacja podpłytkowa', '- Balony blokowe']} backTheme="primary" backTitle="Hydroizolacje Dachów i Tarasów" backSubtitle="Szczelność, za którą bierzemy odpowiedzialność." backDescription="Tworzymy w 100% szczelne, bezspoinowe powłoki chroniące przed wodą." backList={['Brak szwów i łączeń (miejsc przecieków)', 'Odporność na mrozy i UV (od -40 st.C do 90 st.C)', 'Czas realizacji do 7 dni', 'Efekt zimnego dachu (nie nagrzewa się)']} modalTitle="Systemy Hydroizolacji Płynnych" modalQuote="Najwyższa forma ochrony dachu to taka, która nie posiada ani jednego słabego punktu w postaci zgrzewu czy zakładki." modalDescription={<p>Nasza technologia opiera się na nowoczesnych membranach płynnych, które po aplikacji tworzą jednolitą, „gumową” powłokę na całej powierzchni dachu lub tarasu.</p>} modalFeatures={['100% bezspoinowość', 'Refleksyjność (nie nagrzewa się)', 'Do 25 lat trwałości', 'Odporność na stojącą wodę']} formServiceName="Hydroizolacje" formPlaceholder="Opisz obiekt (np. przeciekający dach papowy, woda stoi po opadach, zależy na czasie...)" />
+        frontTitle="Hydroizolacje Dachów i Tarasów"
+        frontList={['- Lorem ipsum dolor sit amet', '- Consectetur adipiscing elit']}
+        backTheme="primary"
+        backTitle="Hydroizolacje Dachów i Tarasów"
+        backSubtitle="Szczelność, za którą bierzemy odpowiedzialność."
+        backDescription="Tworzymy w 100% szczelne, bezspoinowe powłoki chroniące przed wodą. Idealne do naprawy przeciekających dachów płaskich."
+        backList={['Brak szwów i łączeń (miejsc przecieków)', 'Odporność na mrozy i UV', 'Błyskawiczny czas realizacji']}
+        modalTitle="Systemy Hydroizolacji Płynnych"
+        modalQuote="Najwyższa forma ochrony dachu to taka, która nie posiada ani jednego słabego punktu w postaci zgrzewu czy zakładki."
+        modalDescription={<p>Nasza technologia opiera się na nowoczesnych membranach płynnych, które po aplikacji tworzą jednolitą, „gumową” powłokę na całej powierzchni dachu lub tarasu.</p>}
+        modalFeatures={['100% bezspoinowość', 'Refleksyjność (nie nagrzewa się)', 'Do 25 lat trwałości', 'Odporność na stojącą wodę']}
+        formServiceName="Hydroizolacje"
+        formPlaceholder="Opisz obiekt (np. przeciekający dach papowy, woda stoi po opadach, zależy na czasie...)"
+        caseStudyFileName="case-study-hydroizolacje.pdf"
+    />
 );
 
 export const ServiceCard2 = () => (
     <BaseServiceCard
         frontImage={imgUsluga2}
         frontIcon={PaintRoller}
-        frontTitle="Malowanie Hydrodynamiczne" frontList={['- Dachy', '- Hale, magazyny', '- Ciągi komunikacyjne (klatki schodowe)']} backTheme="primary" backTitle="Malowanie Hydrodynamiczne" backSubtitle="Prace wykończeniowe w obiektach wielkopowierzchniowych." backDescription="Idealnie gładkie powierzchnie bez smug. Malujemy hale, magazyny i elewacje w rekordowym czasie." backList={['Wydajność do 1000m² dziennie', 'Doskonałe krycie detali i zakamarków', 'Oszczędność materiału do 20%']} modalTitle="Malowanie Natryskowe (Agregatem)" modalQuote="Rozwiązanie dedykowane dla inwestycji, gdzie liczy się czas i bezbłędna estetyka na dużych płaszczyznach." modalDescription={<p>Wykorzystujemy profesjonalne agregaty hydrodynamiczne, które tłoczą farbę pod wysokim ciśnieniem bez użycia powietrza. Pozwala to na uzyskanie idealnej struktury bez "chmurek" i smug typowych dla wałka.</p>} modalFeatures={['Idealna struktura bez smug', 'Wydajność do 1000m² dziennie', 'Doskonałe krycie detali', 'Oszczędność farby do 20%']} formServiceName="Malowanie Natryskowe" formPlaceholder="Opisz obiekt (np. hala magazynowa, malowanie ścian i sufitu wewnątrz, szukamy wolnego terminu...)" />
+        frontTitle="Malowanie Hydrodynamiczne"
+        frontList={['- Lorem ipsum dolor sit amet', '- Consectetur adipiscing elit']}
+        backTheme="primary"
+        backTitle="Malowanie Hydrodynamiczne"
+        backSubtitle="Prace wykończeniowe w obiektach wielkopowierzchniowych."
+        backDescription="Idealnie gładkie powierzchnie bez smug. Malujemy hale, magazyny i elewacje w rekordowym czasie."
+        backList={['Wydajność do 1000m² dziennie', 'Doskonałe krycie detali i zakamarków', 'Oszczędność materiału do 20%']}
+        modalTitle="Malowanie Natryskowe (Agregatem)"
+        modalQuote="Rozwiązanie dedykowane dla inwestycji, gdzie liczy się czas i bezbłędna estetyka na dużych płaszczyznach."
+        modalDescription={<p>Wykorzystujemy profesjonalne agregaty hydrodynamiczne, które tłoczą farbę pod wysokim ciśnieniem bez użycia powietrza. Pozwala to na uzyskanie idealnej struktury bez "chmurek" i smug typowych dla wałka.</p>}
+        modalFeatures={['Idealna struktura bez smug', 'Wydajność do 1000m² dziennie', 'Doskonałe krycie detali', 'Oszczędność farby do 20%']}
+        formServiceName="Malowanie Natryskowe"
+        formPlaceholder="Opisz obiekt (np. hala magazynowa, malowanie ścian i sufitu wewnątrz, szukamy wolnego terminu...)"
+        caseStudyFileName="case-study-malowanie.pdf"
+    />
 );
 
 export const ServiceCard3 = () => (
     <BaseServiceCard
         frontImage={imgUsluga3}
         frontIcon={Layers}
-        frontTitle="Gładzie Polimerowe" frontList={['- Budynki użyteczności publicznej', '- Klatki schodowe']} backTheme="primary" backTitle="Gładzie Polimerowe" backSubtitle="Szybkość realizacji o 60%, powtarzalność i jakość." backDescription="Idealnie równe ściany w ułamku czasu. Gwarancja perfekcyjnego przygotowania powierzchni." backList={['Perfekcyjna gładkość (Q3/Q4)', 'Pylenie ograniczone o 90%']} modalTitle="Natryskowe Gładzie Polimerowe" modalQuote="Gładzie polimerowe aplikowane natryskowo to obecnie najwyższy standard przygotowania ścian pod malowanie lub tapetowanie." modalDescription={<p>Dzięki maszynowej aplikacji warstwa jest idealnie równa na całej płaszczyźnie, co eliminuje ryzyko powstawania nierówności widocznych pod światło na dużych powierzchniach.</p>} modalFeatures={['Perfekcyjna gładkość (Q3/Q4)', 'Idealnie równa warstwa', 'Znacznie mniejsze pylenie', 'Wysoka twardość ściany']} formServiceName="Gładzie Polimerowe" formPlaceholder="Opisz obiekt (np. nowe biura, ściany działowe z karton-gipsu, wysoki standard wykończenia...)" />
+        frontTitle="Gładzie Polimerowe"
+        frontList={['- Lorem ipsum dolor sit amet', '- Consectetur adipiscing elit']}
+        backTheme="primary"
+        backTitle="Gładzie Polimerowe"
+        backSubtitle="Szybkość, powtarzalność i jakość możliwa do skontrolowania."
+        backDescription="Idealnie równe ściany w ułamku czasu. Gwarancja perfekcyjnego przygotowania powierzchni."
+        backList={['Perfekcyjna gładkość (Q3/Q4)', 'Znacznie mniejsze pylenie', 'Wysoka twardość i odporność']}
+        modalTitle="Natryskowe Gładzie Polimerowe"
+        modalQuote="Gładzie polimerowe aplikowane natryskowo to obecnie najwyższy standard przygotowania ścian pod malowanie lub tapetowanie."
+        modalDescription={<p>Dzięki maszynowej aplikacji warstwa jest idealnie równa na całej płaszczyźnie, co eliminuje ryzyko powstawania nierówności widocznych pod światło na dużych powierzchniach.</p>}
+        modalFeatures={['Perfekcyjna gładkość (Q3/Q4)', 'Idealnie równa warstwa', 'Znacznie mniejsze pylenie', 'Wysoka twardość ściany']}
+        formServiceName="Gładzie Polimerowe"
+        formPlaceholder="Opisz obiekt (np. nowe biura, ściany działowe z karton-gipsu, wysoki standard wykończenia...)"
+        caseStudyFileName="case-study-gladzie.pdf"
+    />
 );
 
 export const ServiceCard4 = () => (
     <BaseServiceCard
         frontImage={imgUsluga4}
         frontIcon={Droplets}
-        frontTitle="Posadzki Żywiczne" frontList={['- Hale', '- Magazyny', '- Garaże', '- Pomieszczenia techniczne']} backTheme="primary" backTitle="Posadzki Żywiczne" backSubtitle="Trwałość i estetyka bez kompromisów." backDescription="Tworzymy niezwykle odporne posadzki epoksydowe i poliuretanowe, idealne do hal, magazynów oraz garaży." backList={['Wysoka odporność mechaniczna', 'Łatwość w utrzymaniu czystości', 'Brak spoin i łączeń']} modalTitle="Systemy Posadzek Żywicznych" modalQuote="Posadzka, która zniesie największe obciążenia, zachowując przy tym nienaganny wygląd przez lata." modalDescription={<p>Aplikujemy profesjonalne posadzki żywiczne, precyzyjnie dopasowując grubość i właściwości systemu do specyfiki danego obiektu – od intensywnie użytkowanych hal produkcyjnych po estetyczne garaże i przestrzenie komercyjne.</p>} modalFeatures={['Ekstremalna odporność na ścieranie', 'Powłoka antypoślizgowa (opcja)', 'Odporność na chemię i oleje', 'Szeroka paleta kolorów']} formServiceName="Posadzki Żywiczne" formPlaceholder="Opisz obiekt (np. hala produkcyjna 200m2, stary beton, poszukujemy odporności chemicznej...)" />
+        frontTitle="Posadzki Żywiczne"
+        frontList={['- Lorem ipsum dolor sit amet', '- Consectetur adipiscing elit']}
+        backTheme="primary"
+        backTitle="Posadzki Żywiczne"
+        backSubtitle="Trwałość i estetyka bez kompromisów."
+        backDescription="Tworzymy niezwykle odporne posadzki epoksydowe i poliuretanowe, idealne do hal, magazynów oraz nowoczesnych wnętrz."
+        backList={['Wydajność do 1000m² dziennie', 'Doskonałe krycie detali i zakamarków', 'Oszczędność materiału do 20%']}
+        modalTitle="Systemy Posadzek Żywicznych"
+        modalQuote="Posadzka, która zniesie największe obciążenia, zachowując przy tym nienaganny wygląd przez lata."
+        modalDescription={<p>Aplikujemy profesjonalne posadzki żywiczne, precyzyjnie dopasowując grubość i właściwości systemu do specyfiki danego obiektu – od intensywnie użytkowanych hal produkcyjnych po estetyczne garaże i przestrzenie komercyjne.</p>}
+        modalFeatures={['Ekstremalna odporność na ścieranie', 'Powłoka antypoślizgowa (opcja)', 'Odporność na chemię i oleje', 'Szeroka paleta kolorów']}
+        formServiceName="Posadzki Żywiczne"
+        formPlaceholder="Opisz obiekt (np. hala produkcyjna 200m2, stary beton, poszukujemy odporności chemicznej...)"
+        caseStudyFileName="case-study-posadzki.pdf"
+    />
 );
