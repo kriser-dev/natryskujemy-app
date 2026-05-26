@@ -171,7 +171,7 @@ const BaseServiceCard = (props: BaseServiceCardProps) => {
                                 {props.frontTag && <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-brand-primary text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider whitespace-nowrap shadow-md">{props.frontTag}</div>}
                                 <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center mb-6 text-white border border-white/20 shadow-xl"><Icon size={40}/></div>
                                 <h4 className="text-2xl font-extrabold text-white mb-3 drop-shadow-md">{props.frontTitle}</h4>
-                                <ul className="text-slate-100 text-sm mb-4 space-y-1.5 drop-shadow-md font-medium">
+                                <ul className="text-slate-100 text-sm mb-4 space-y-1.5 drop-shadow-md font-medium text-left max-w-xs mx-auto">
                                     {props.frontList.map((item, idx) => <li key={idx}>{item}</li>)}
                                 </ul>
                                 <div className={`mt-auto flex items-center font-semibold text-sm drop-shadow-md ${props.backTheme === 'primary' ? 'text-cyan-300 animate-pulse' : 'text-slate-300'}`}>Dotknij, aby poznać szczegóły <ArrowRight size={16} className="ml-2"/></div>
@@ -296,7 +296,11 @@ export const ServiceCard1 = () => (
         frontTag="Główna Specjalizacja"
         frontIcon={ShieldCheck}
         frontTitle="Hydroizolacje Dachów i Tarasów"
-        frontList={['- Lorem ipsum dolor sit amet', '- Consectetur adipiscing elit']}
+        frontList={[
+            '• pełna szczelność',
+            '• suchy budynek',
+            '• trwałe zabezpieczenie'
+        ]}
         backTheme="primary"
         backTitle="Hydroizolacje Dachów i Tarasów"
         backSubtitle="Szczelność, za którą bierzemy odpowiedzialność."
@@ -352,7 +356,11 @@ export const ServiceCard2 = () => (
         frontImage={imgUsluga2}
         frontIcon={PaintRoller}
         frontTitle="Malowanie Hydrodynamiczne"
-        frontList={['- Lorem ipsum dolor sit amet', '- Consectetur adipiscing elit']}
+        frontList={[
+            '• szybka realizacja',
+            '• idealne krycie',
+            '• brak przestojów'
+        ]}
         backTheme="primary"
         backTitle="Malowanie Hydrodynamiczne"
         backSubtitle="Prace wykończeniowe w obiektach wielkopowierzchniowych."
@@ -366,12 +374,34 @@ export const ServiceCard2 = () => (
         formPlaceholder="Opisz obiekt (np. hala magazynowa, malowanie ścian i sufitu wewnątrz, szukamy wolnego terminu...)"
         caseStudyFileName="case-study-malowanie.pdf"
         modalFormText={
-            <>
-                <h4 className="text-lg font-bold text-slate-900 mb-2">Szukasz wykonawcy do malowania wielkopowierzchniowego?</h4>
+            <div className="space-y-4">
+                <h4 className="text-lg font-bold text-slate-900">Tradycyjne metody malowania wielkich powierzchni to strata czasu i pieniędzy.</h4>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                    Hale przemysłowe, magazyny czy wysokie elewacje wymagają idealnego doboru farb pod kątem warunków eksploatacji oraz odpowiedniego ciśnienia natrysku. Zostaw nam podstawowe informacje o metrażu oraz przeznaczeniu budynku, aby otrzymać darmowy kosztorys.
+                    Malowanie wałkiem na obiektach przemysłowych czy logistycznych generuje liczne problemy. Ujawniają się one najczęściej jako:
                 </p>
-            </>
+                <ul className="space-y-1.5 ml-2">
+                    {['nierównomierne krycie i smugi widoczne pod światło,', 'przedłużające się przestoje w pracy obiektu,', 'znacznie wyższe zużycie materiału,', 'trudności z dokładnym pokryciem instalacji i konstrukcji stalowych.'].map((item, i) => (
+                        <li key={i} className="flex items-start text-sm text-slate-600">
+                            <span className="text-brand-primary mr-2 font-bold">•</span> {item}
+                        </li>
+                    ))}
+                </ul>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                    Klasyczne podejście często kończy się koniecznością robienia poprawek i ukrytymi kosztami, wynikającymi z długiego wyłączenia przestrzeni z użytku.
+                </p>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">
+                    Malowanie hydrodynamiczne odwraca tę sytuację – pozwala na aplikację farby pod wysokim ciśnieniem, gwarantując idealną powłokę i skrócenie czasu pracy o kilkadziesiąt procent.
+                </p>
+
+                <h5 className="text-base font-bold text-slate-900 pt-2">Kto najbardziej skorzysta z tego rozwiązania?</h5>
+                <ul className="space-y-1.5 ml-2">
+                    {['generalni wykonawcy i deweloperzy,', 'zarządcy hal produkcyjnych i magazynów,', 'właściciele obiektów komercyjnych i biurowych,', 'inwestorzy wymagający błyskawicznej realizacji.'].map((item, i) => (
+                        <li key={i} className="flex items-start text-sm text-slate-600">
+                            <CheckCircle2 size={16} className="text-green-500 mr-2 mt-0.5 flex-shrink-0"/> {item}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         }
     />
 );
@@ -381,7 +411,11 @@ export const ServiceCard3 = () => (
         frontImage={imgUsluga3}
         frontIcon={Layers}
         frontTitle="Gładzie Polimerowe"
-        frontList={['- Lorem ipsum dolor sit amet', '- Consectetur adipiscing elit']}
+        frontList={[
+            '• idealna gładkość',
+            '• minimalne pylenie',
+            '• szybka realizacja'
+        ]}
         backTheme="primary"
         backTitle="Gładzie Polimerowe"
         backSubtitle="Szybkość, powtarzalność i jakość możliwa do skontrolowania."
@@ -395,12 +429,34 @@ export const ServiceCard3 = () => (
         formPlaceholder="Opisz obiekt (np. nowe biura, ściany działowe z karton-gipsu, wysoki standard wykończenia...)"
         caseStudyFileName="case-study-gladzie.pdf"
         modalFormText={
-            <>
-                <h4 className="text-lg font-bold text-slate-900 mb-2">Chcesz uzyskać idealnie gładkie ściany w standardzie Q3 lub Q4?</h4>
+            <div className="space-y-4">
+                <h4 className="text-lg font-bold text-slate-900">Ręczne szpachlowanie nie gwarantuje powtarzalnej jakości na dużych inwestycjach.</h4>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                    Maszynowe nakładanie gładzi polimerowych to gwarancja idealnej powtarzalności i braku fal na ścianach pod światło. Napisz nam, jaki jest aktualny stan tynków w Twoim budynku oraz szacowany metraż, aby nasi specjaliści mogli wycenić realizację.
+                    Przy dużych metrażach tradycyjne metody nakładania gładzi szybko obnażają swoje słabości. Błędy i niedociągnięcia widać przeważnie:
                 </p>
-            </>
+                <ul className="space-y-1.5 ml-2">
+                    {['przy bocznym oświetleniu (fale i wyraźne smugi),', 'w postaci mikropęknięć na łączeniach płyt,', 'w ogromnym zapyleniu obiektu podczas długotrwałego szlifowania,', 'w drastycznym wydłużeniu harmonogramu prac wykończeniowych.'].map((item, i) => (
+                        <li key={i} className="flex items-start text-sm text-slate-600">
+                            <span className="text-brand-primary mr-2 font-bold">•</span> {item}
+                        </li>
+                    ))}
+                </ul>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                    Tradycyjne mieszanki gipsowe wymagają czasu, a błąd ludzki przy ręcznym zaciąganiu bezpośrednio rzutuje na ostateczny wygląd drogich farb, tapet i oświetlenia.
+                </p>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">
+                    Natryskowe gładzie polimerowe eliminują te błędy – tworzą twardą, idealnie równą (standard Q3/Q4) i elastyczną warstwę, drastycznie przyspieszając etap wykończenia.
+                </p>
+
+                <h5 className="text-base font-bold text-slate-900 pt-2">Kto najbardziej skorzysta z tego rozwiązania?</h5>
+                <ul className="space-y-1.5 ml-2">
+                    {['firmy deweloperskie i wykończeniowe,', 'inwestorzy biurowi i hotelowi,', 'placówki edukacyjne i medyczne,', 'osoby oczekujące bezbłędnej estetyki w standardzie premium.'].map((item, i) => (
+                        <li key={i} className="flex items-start text-sm text-slate-600">
+                            <CheckCircle2 size={16} className="text-green-500 mr-2 mt-0.5 flex-shrink-0"/> {item}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         }
     />
 );
@@ -410,7 +466,11 @@ export const ServiceCard4 = () => (
         frontImage={imgUsluga4}
         frontIcon={Droplets}
         frontTitle="Posadzki Żywiczne"
-        frontList={['- Lorem ipsum dolor sit amet', '- Consectetur adipiscing elit']}
+        frontList={[
+            '• brak pylenia',
+            '• łatwe czyszczenie',
+            '• najwyższa trwałość'
+        ]}
         backTheme="primary"
         backTitle="Posadzki Żywiczne"
         backSubtitle="Trwałość i estetyka bez kompromisów."
@@ -424,12 +484,34 @@ export const ServiceCard4 = () => (
         formPlaceholder="Opisz obiekt (np. hala produkcyjna 200m2, stary beton, poszukujemy odporności chemicznej...)"
         caseStudyFileName="case-study-posadzki.pdf"
         modalFormText={
-            <>
-                <h4 className="text-lg font-bold text-slate-900 mb-2">Planujesz wykonanie odpornej posadzki epoksydowej lub poliuretanowej?</h4>
+            <div className="space-y-4">
+                <h4 className="text-lg font-bold text-slate-900">Niezabezpieczony beton z czasem pyli, pęka i chłonie zabrudzenia jak gąbka.</h4>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                    W przypadku żywic kluczowe jest określenie obciążeń mechanicznych oraz stanu podłoża betonowego. Zostaw nam wiadomość o metrażu oraz specyfice działalności (np. warsztat, magazyn, dom), a my przygotujemy dopasowany kosztorys systemu posadzkowego.
+                    Posadzki w warunkach intensywnego użytkowania poddawane są skrajnym obciążeniom. Najpoważniejsze wyzwania to najczęściej:
                 </p>
-            </>
+                <ul className="space-y-1.5 ml-2">
+                    {['głębokie, trudne do usunięcia plamy z olejów i agresywnej chemii,', 'odspajanie i łuszczenie się cienkich powłok malarskich,', 'ciągłe pylenie podłoża, które niszczy sprzęt i maszyny,', 'trudności z utrzymaniem rygorystycznych norm higieny.'].map((item, i) => (
+                        <li key={i} className="flex items-start text-sm text-slate-600">
+                            <span className="text-brand-primary mr-2 font-bold">•</span> {item}
+                        </li>
+                    ))}
+                </ul>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                    Tanie metody zabezpieczenia podłoża sprawdzają się zaledwie na chwilę, a późniejsza naprawa zniszczonej płyty w trakcie funkcjonowania zakładu jest niesamowicie kosztowna i skomplikowana logistycznie.
+                </p>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">
+                    Profesjonalnie dobrana posadzka żywiczna rozwiązuje te problemy, tworząc szczelną, bezspoinową barierę, odporną na ścieranie, uderzenia i chemię przez wiele lat.
+                </p>
+
+                <h5 className="text-base font-bold text-slate-900 pt-2">Kto najbardziej skorzysta z tego rozwiązania?</h5>
+                <ul className="space-y-1.5 ml-2">
+                    {['zakłady produkcyjne i przemysłowe,', 'warsztaty i serwisy samochodowe,', 'obiekty logistyczne z ruchem wózków widłowych,', 'przestrzenie komercyjne, garaże i wystawiennictwo.'].map((item, i) => (
+                        <li key={i} className="flex items-start text-sm text-slate-600">
+                            <CheckCircle2 size={16} className="text-green-500 mr-2 mt-0.5 flex-shrink-0"/> {item}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         }
     />
 );
