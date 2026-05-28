@@ -3,6 +3,8 @@ import {
     Droplets, PhoneCall, Menu, X, ChevronDown, ArrowUp, Cookie, MapPin, Loader2
 } from 'lucide-react';
 
+import ReactGA from 'react-ga4';
+
 // Konteksty i ikony
 import {useAppContext} from './context/useAppContext';
 import {AppProvider} from "./context/AppProvider";
@@ -80,9 +82,20 @@ const AppContent = () => {
         if (isMenuOpen) setIsAboutMobileOpen(false);
     };
 
+    // --- BLOK GOOGLE ANALYTICS ---
+    useEffect(() => {
+        // Wysyłamy informację do Google za każdym razem, gdy zmieni się 'currentPage'
+        ReactGA.send({
+            hitType: 'pageview',
+            page: `/${currentPage}`,
+            title: `Podstrona: ${currentPage}`
+        });
+    }, [currentPage]);
+    // ------------------------------------
+
     useEffect(() => {
         const handleScroll = throttle(() => {
-            // 1. Strzałka powrotu na górę (Twój oryginalny kod)
+            // 1. Strzałka powrotu na górę
             setShowScrollTop(window.scrollY > UI_CONFIG.SCROLL_THRESHOLD);
 
             // 2. NOWOŚĆ: Obliczanie postępu dla paska na górze
@@ -97,13 +110,13 @@ const AppContent = () => {
         }, UI_CONFIG.SCROLL_THROTTLE_LIMIT);
 
         // Używamy { passive: true } - to dobra praktyka dla płynności scrollowania
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('scroll', handleScroll, {passive: true});
 
         // Wywołujemy funkcję raz na start - dzięki temu jeśli klient odświeży stronę
         // będąc w jej połowie, pasek od razu skoczy na 50%, zamiast zaczynać od 0.
         handleScroll();
 
-        // 3. Baner ciasteczek (Twój oryginalny kod)
+        // 3. Baner ciasteczek
         if (!localStorage.getItem('natryskujemy_cookie_consent')) {
             setTimeout(() => setShowCookieBanner(true), TIMEOUTS.COOKIE_BANNER);
         }
@@ -129,7 +142,7 @@ const AppContent = () => {
             <div className="fixed top-0 left-0 w-full h-1.5 z-[100] bg-slate-100">
                 <div
                     className="h-full bg-brand-primary shadow-[0_0_10px_rgba(37,99,235,0.5)] transition-all duration-150 ease-out"
-                    style={{ width: `${scrollProgress}%` }}
+                    style={{width: `${scrollProgress}%`}}
                 ></div>
             </div>
 
@@ -180,17 +193,16 @@ const AppContent = () => {
                                 {/* Twój sygnet/ikona kropelki (zostaje obok) */}
                                 <Droplets
                                     className="h-8 w-8 text-brand-primary mr-2 group-hover:scale-110 transition-transform"/>
-
                                 <div className="flex flex-col mr-4">
-      <span className="font-extrabold text-xl md:text-2xl tracking-tight text-slate-900 leading-none">
-        natryskujemy<span className="text-brand-primary">.pl</span>
-      </span>
+                                    <span className="font-extrabold text-xl md:text-2xl tracking-tight text-slate-900 leading-none">
+                                      natryskujemy<span className="text-brand-primary">.pl</span>
+                                    </span>
                                     <span className="text-[10px] font-semibold text-slate-500 tracking-wider">
-        MARKA FIRMY HydroPAKiet
-      </span>
+                                      MARKA FIRMY HydroPAKiet
+                                    </span>
                                 </div>
 
-                                {/* TWOJE BIAŁE LOGO W NIEBIESKIM PUDEŁKU - widoczne też na mobile */}
+                                {/* BIAŁE LOGO W NIEBIESKIM PUDEŁKU - widoczne też na mobile */}
                                 <div
                                     className="bg-brand-primary px-3 py-1.5 rounded-lg shadow-sm flex items-center justify-center transition-transform hover:scale-105 border border-brand-dark/10">
                                     <img
@@ -324,7 +336,7 @@ const AppContent = () => {
                 </Suspense>
             </main>
 
-            {/* W 100% zrekonstruowana Stopka */}
+            {/* Stopka */}
             <footer className="bg-slate-950 text-slate-400 py-12 text-sm mt-auto">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div>
@@ -441,7 +453,7 @@ const AppContent = () => {
                 </div>
             </footer>
 
-            {/* Baner Cookies - z pełnym tekstem z oryginału */}
+            {/* Baner Cookies */}
             {showCookieBanner && (
                 <div
                     className="fixed bottom-0 left-0 w-full bg-slate-900 border-t border-slate-800 shadow-[0_-10px_40px_rgba(0,0,0,0.3)] z-[100] animate-in slide-in-from-bottom duration-700">
