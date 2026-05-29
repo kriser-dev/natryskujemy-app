@@ -412,8 +412,8 @@ const AppContent = () => {
                                 </button>
                             </li>
                             <li>
-                                <button onClick={() => navigateTo('home', 'kontakt')}
-                                        className="hover:text-brand-primary transition-colors">Kontakt i Wycena
+                                <button onClick={() => navigateTo('contact')}
+                                        className="hover:text-brand-primary transition-colors">Skontaktuj się
                                 </button>
                             </li>
                         </ul>
@@ -448,8 +448,7 @@ const AppContent = () => {
                             </button>
                         </div>
                     </div>
-                    <p className="mt-4 md:mt-0 text-xs text-slate-600">Zoptymalizowane pod kątem szybkiego ładowania i
-                        SEO.</p>
+                    <p className="mt-4 md:mt-0 text-xs text-slate-600">Created by: KRiSeR</p>
                 </div>
             </footer>
 

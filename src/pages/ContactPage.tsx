@@ -2,12 +2,15 @@ import { useState, type SubmitEvent } from 'react';
 import { MapPin, CheckCircle2, PhoneCall, Mail, Send, Loader2, X } from 'lucide-react';
 import { Facebook, Instagram, TikTokIcon, Youtube } from '../components/Icons';
 import { SOCIAL_LINKS, CONTACT_INFO, TIMEOUTS } from '../config/constants';
+import { useAppContext } from '../context/useAppContext';
 
 // ZDJĘCIA DORADCÓW - Pamiętaj by wrzucić te pliki do folderu src/assets/
 import imgOsoba1 from '../assets/osoba1.webp';
 import imgOsoba2 from '../assets/osoba2.webp';
 
 export default function ContactPage() {
+    const { navigateTo } = useAppContext();
+
     const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -27,7 +30,13 @@ export default function ContactPage() {
             message: formData.get('message'),
         };
 
+        // Sprawdzamy stan opcjonalnego checkboxa zgody na newsletter
+        const wantsNewsletter = formData.get('newsletterConsent') === 'on';
+
         try {
+            // =====================================================================
+            // 1. KROK: Wysyłka tradycyjnej wiadomości formularza kontaktowego
+            // =====================================================================
             const response = await fetch('http://localhost:3000/api/contact', {
                 method: 'POST',
                 headers: {
@@ -37,6 +46,23 @@ export default function ContactPage() {
             });
 
             if (response.ok) {
+
+                // =====================================================================
+                // 2. KROK (UJEDNOLICONY): Jeśli zaznaczono zgodę, zapisujemy do MailerLite
+                // =====================================================================
+                if (wantsNewsletter && data.email) {
+                    try {
+                        await fetch('http://localhost:3000/api/newsletter', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: data.email })
+                        });
+                    } catch (mlErr) {
+                        console.error('Błąd zapisu do newslettera:', mlErr);
+                    }
+                }
+                // =====================================================================
+
                 setFormStatus('success');
                 (e.target as HTMLFormElement).reset();
                 setTimeout(() => setFormStatus('idle'), TIMEOUTS.FORM_SUCCESS_RESET);
@@ -113,6 +139,27 @@ export default function ContactPage() {
                                           placeholder="Opisz w kilku słowach w czym możemy Ci pomóc..." disabled={formStatus === 'submitting'}></textarea>
                             </div>
 
+                            {/* DODANY CHECKBOX NEWSLETTERA */}
+                            <div className="flex items-start py-2">
+                                <div className="flex items-center h-5 mt-0.5">
+                                    <input
+                                        id="newsletterConsent"
+                                        name="newsletterConsent"
+                                        type="checkbox"
+                                        className="w-5 h-5 rounded-md border-slate-300 text-brand-primary focus:ring-brand-primary/50 transition-all cursor-pointer accent-brand-primary"
+                                        disabled={formStatus === 'submitting'}
+                                    />
+                                </div>
+                                <div className="ml-3 text-sm">
+                                    <label htmlFor="newsletterConsent" className="font-medium text-slate-700 cursor-pointer select-none">
+                                        Chcę otrzymywać materiały edukacyjne i oferty na e-mail
+                                    </label>
+                                    <p className="text-slate-500 text-xs mt-1">
+                                        Zapisz się do newslettera. To w pełni opcjonalne, a z listy możesz wypisać się w każdej chwili jednym kliknięciem.
+                                    </p>
+                                </div>
+                            </div>
+
                             {errorMessage && (
                                 <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-xl animate-in fade-in duration-300">
                                     <p className="text-sm font-medium">{errorMessage}</p>
@@ -128,8 +175,14 @@ export default function ContactPage() {
                                 )}
                             </button>
 
-                            <p className="text-xs text-slate-400 mt-4 text-center px-4 leading-relaxed">
-                                Wysyłając wiadomość, wyrażasz zgodę na przetwarzanie swoich danych osobowych w celu obsługi zapytania. Szczegóły znajdziesz w naszej <a href="/polityka-prywatnosci" className="text-brand-primary hover:text-brand-dark hover:underline transition-colors">Polityce Prywatności</a>.
+                            <p className="text-xs text-slate-400 mt-3 leading-relaxed text-center mx-auto max-w-2xl bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                Wysyłając wiadomość, wyrażasz zgodę na przetwarzanie swoich danych osobowych w celu obsługi zapytania. Szczegóły znajdziesz w naszej{' '}
+                                <span
+                                    onClick={() => navigateTo('privacy')}
+                                    className="text-brand-primary hover:text-brand-dark underline cursor-pointer font-medium transition-colors"
+                                >
+                                    Polityce Prywatności
+                                </span>.
                             </p>
                         </form>
                     </div>

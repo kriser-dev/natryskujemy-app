@@ -19,7 +19,7 @@ export default function HomePage() {
         setDownloadStatus('loading');
         try {
             // Próbujemy pobrać plik
-            const response = await fetch('/folder-reklamowy.pdf');
+            const response = await fetch('/HydroPAKiet-nasze-technologie.pdf');
 
             // 1. Sprawdzenie czy serwer nie zgłosił twardego błędu (np. 404, 500)
             if (!response.ok) {
@@ -54,7 +54,7 @@ export default function HomePage() {
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = 'HydroPAKiet-folder-ofertowy.pdf'; // Nazwa docelowa pliku
+            a.download = 'HydroPAKiet-nasze-technologie.pdf'; // Nazwa docelowa pliku
             document.body.appendChild(a);
             a.click();
 
@@ -176,28 +176,22 @@ export default function HomePage() {
 
                             {/* ZMIANA 3: Dodane justify-center, aby 3 przyciski ułożyły się na środku */}
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                <a
-                                    href="/kontakt"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        navigateTo('contact');
-                                    }}
+                                {/* PRZYCISK 1: Kontakt */}
+                                <button
+                                    onClick={() => navigateTo('contact')}
                                     className="bg-brand-primary hover:bg-brand-dark text-white px-8 py-4 rounded-full font-bold text-lg transition-all flex items-center justify-center shadow-lg shadow-brand-primary/40"
                                 >
                                     Skontaktuj się z nami
                                     <ArrowRight className="ml-2" size={20}/>
-                                </a>
+                                </button>
 
-                                <a
-                                    href="/#uslugi"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        navigateTo('home', 'uslugi');
-                                    }}
+                                {/* PRZYCISK 2: Usługi */}
+                                <button
+                                    onClick={() => navigateTo('home', 'uslugi')}
                                     className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg transition-all text-center backdrop-blur-md"
                                 >
                                     Poznaj nasze usługi
-                                </a>
+                                </button>
 
                                 {/* INTELIGENTNY PRZYCISK POBIERANIA */}
                                 <button
