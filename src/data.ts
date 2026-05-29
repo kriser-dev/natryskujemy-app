@@ -29,12 +29,16 @@ export const faqsData: FAQItemData[] = [
 
 export const opinionsData: Opinion[] = [
     {
-        text: "Pełen profesjonalizm! Pan Przemek z firmy HydroPAKiet doradził najlepsze rozwiązanie do naszego dachu. Mycie i impregnacja wykonane błyskawicznie, a dom wygląda jak nowy. Bardzo polecam współpracę z natryskujemy.pl!",
+        text: "Pełen profesjonalizm! Pan Przemek z firmy HydroPAKiet doradził najlepsze rozwiązanie dla naszego dachu. Mycie i impregnacja wykonane błyskawicznie, wygląda jak nowy. Bardzo polecam współpracę z natryskujemy.pl!",
         author: "Michał T., Tarnowskie Góry"
     },
     {
         text: "Zleciłem im malowanie hydrodynamiczne sporej hali magazynowej. Byłem w szoku, w jakim tempie to zrobili. Zero zacieków, idealne krycie. Konkretna firma, rzetelna wycena i super kontakt.",
         author: "Tomasz W., Bytom"
+    },
+    {
+        text: "Na firmę trafiłem z polecenia i nie zawiodłem się. Jakoś wykonania na najwyższym poziomie. Po kilka drobnych poprawkach nie można się do niczego przyczepić. Gdyby wszyscy fachowcy podchodzili tak profesjonalnie do pracy to wykończenie nie było by takie straszne. Z czystym sercem polecam!",
+        author: "Robert K."
     },
     {
         text: "Gładzie natryskowe to był strzał w dziesiątkę. Ekipa weszła, zabezpieczyła wszystko i po kilku dniach ściany były gładkie jak szkło. Zero pyłu latającego po całym domu i szybka realizacja.",
@@ -43,6 +47,10 @@ export const opinionsData: Opinion[] = [
     {
         text: "Mieliśmy problem z przeciekającym płaskim dachem przez dwa sezony. Dopiero powłoka od natryskujemy.pl rozwiązała sprawę definitywnie. Solidni fachowcy, po których widać doświadczenie.",
         author: "Piotr M., Zabrze"
+    },
+    {
+        text: "Kontakt do firmy dostałem od znajomego z polecenia! Po wstępnych rozmowach i ustaleniach jak miałyby wyglądać pracę decyzja zapadła bardzo szybko, działamy! Pracę wykonane profesjonalnie, w określonym terminie, za każdym razem dobry i bezpośredni kontakt co bardzo ułatwiło wprowadzenie ewentualnych zmian, które jak zawsze w trakcie prac się pojawiają. Codzienne dbanie o czystość w trakcie pracy i pod koniec, bardzo na plus! Z czystym sumieniem polecam firmę.",
+        author: "Michał K."
     }
 ];
 
