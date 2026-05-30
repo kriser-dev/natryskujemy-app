@@ -61,8 +61,8 @@ export const projectsData: Project[] = [
         iconName: 'ShieldCheck',
         title: "Hydroizolacja Dachu Płaskiego (Papa)",
         location: "Tarnowskie Góry",
-        image: "https://images.unsplash.com/photo-1621648057993-9c59577c3857?auto=format&fit=crop&q=80",
-        stats: {area: "450 m²", time: "2 dni", guarantee: "15 lat"},
+        image: "/dach1.webp",
+        stats: {area: "550 m²", time: "6 dni", guarantee: "10 lat"},
         problem: "Rozległe przecieki wierzchniej warstwy starej papy termozgrzewalnej, powodujące zawilgocenie poddasza użytkowego.",
         solution: "Oczyszczenie dachu, aplikacja gruntu oraz natrysk elastycznej powłoki bezspoinowej, tworzącej 100% barierę wodną."
     },
@@ -72,7 +72,7 @@ export const projectsData: Project[] = [
         iconName: 'PaintRoller',
         title: "Malowanie Hali Przemysłowej",
         location: "Katowice",
-        image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80",
+        image: "/malowanie2.webp",
         stats: {area: "1200 m²", time: "3 dni", type: "Antykorozja"},
         problem: "Złuszczająca się farba na konstrukcji stalowej hali i konieczność szybkiego odświeżenia wnętrza.",
         solution: "Dokładne mycie pod ciśnieniem oraz błyskawiczne malowanie agregatem hydrodynamicznym specjalistyczną farbą."
@@ -83,7 +83,7 @@ export const projectsData: Project[] = [
         iconName: 'Layers',
         title: "Gładzie Polimerowe na Osiedlu",
         location: "Gliwice",
-        image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80",
+        image: "/gladzie2.webp",
         stats: {area: "850 m²", time: "5 dni", type: "Polimerowe"},
         problem: "Nierówne tynki deweloperskie w nowo wybudowanych domach szeregowych.",
         solution: "Zastosowanie gładzi polimerowych nanoszonych agregatem. Natrysk pozwolił na uzyskanie idealnej tafli."
@@ -94,8 +94,8 @@ export const projectsData: Project[] = [
         iconName: 'ShieldCheck',
         title: "Renowacja Tarasu (Membrana)",
         location: "Rybnik",
-        image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80",
-        stats: {area: "120 m²", time: "1 dzień", guarantee: "10 lat"},
+        image: "/taras1.webp",
+        stats: {area: "120 m²", time: "5 dzień", guarantee: "10 lat"},
         problem: "Pękające płytki i przecieki do pomieszczenia bezpośrednio pod tarasem po mroźnym okresie zimowym.",
         solution: "Aplikacja trwałej membrany poliuretanowej bezpośrednio na stare płytki. Brak konieczności głośnego i drogiego kucia."
     },
@@ -105,8 +105,8 @@ export const projectsData: Project[] = [
         iconName: 'PaintRoller',
         title: "Odświeżenie Elewacji Magazynu",
         location: "Dąbrowa Górnicza",
-        image: "https://images.unsplash.com/photo-1504307651254-35680f35aa9e?auto=format&fit=crop&q=80",
-        stats: {area: "2500 m²", time: "4 dni", type: "Fasada"},
+        image: "/malowanie1.webp",
+        stats: {area: "1500 m²", time: "4 dni", type: "Fasada"},
         problem: "Wyblakła i silnie zabrudzona elewacja przemysłowa z płyt warstwowych, która psuła rynkowy wizerunek firmy.",
         solution: "Dogłębne mycie wysokociśnieniowe oraz dwukrotne malowanie natryskowe wydajnym agregatem z użyciem farby fasadowej."
     },
@@ -116,8 +116,8 @@ export const projectsData: Project[] = [
         iconName: 'Layers',
         title: "Gładzie w Nowym Biurowcu",
         location: "Chorzów",
-        image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80",
-        stats: {area: "1800 m²", time: "8 dni", type: "Gipsowe"},
+        image: "/gladzie1.webp",
+        stats: {area: "1800 m²", time: "8 dni", type: "Polimerowe"},
         problem: "Krótki termin oddania budynku do użytku i konieczność natychmiastowego, gładkiego przygotowania ścian pod malowanie.",
         solution: "Zastosowanie wydajnych agregatów do gładzi i zgranej ekipy, co pozwoliło nam wyprzedzić napięty harmonogram inwestora o całe 3 dni."
     }

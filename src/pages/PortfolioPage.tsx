@@ -77,10 +77,9 @@ export default function PortfolioPage() {
                              className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 flex flex-col group">
                             <div className="relative h-64 overflow-hidden">
                                 <picture className="w-full h-full">
-                                    <source srcSet={`${project.image}&w=400 400w, ${project.image}&w=800 800w`}
-                                            sizes="(max-width: 768px) 100vw, 50vw" type="image/webp"/>
+
                                     <img
-                                        src={`${project.image}&w=800`}
+                                        src={project.image}
                                         alt={`Realizacja: ${project.title}`}
                                         className="w-full h-full object-cover will-change-transform group-hover:scale-105 transition-transform duration-700"
                                         loading="lazy"
