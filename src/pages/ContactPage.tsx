@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from 'react';
+import { useState, useRef, useEffect, type SubmitEvent } from 'react';
 import { MapPin, CheckCircle2, PhoneCall, Mail, Send, Loader2, X } from 'lucide-react';
 import { Facebook, Instagram, TikTokIcon, Youtube } from '../components/Icons';
 import { SOCIAL_LINKS, CONTACT_INFO, TIMEOUTS } from '../config/constants';
@@ -8,73 +8,119 @@ import { useAppContext } from '../context/useAppContext';
 import imgOsoba1 from '../assets/osoba1.webp';
 import imgOsoba2 from '../assets/osoba2.webp';
 
+// Dynamiczny adres URL z .env (zapasowo localhost)
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 export default function ContactPage() {
     const { navigateTo } = useAppContext();
 
     const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-    // NOWY STAN DO PRZECHOWYWANIA POWIĘKSZONEGO ZDJĘCIA
     const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
+
+    // POPRAWKA: Typ 'number' zamiast 'NodeJS.Timeout' rozwiązuje błąd środowiska Vite
+    const timeoutRef = useRef<number | null>(null);
+
+    // Bezpieczne czyszczenie timeoutu przy odmontowywaniu komponentu
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current !== null) {
+                window.clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
+
+    // Obsługa klawisza Escape dla zamykania zdjęcia
+    useEffect(() => {
+        const handleEsc = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setEnlargedImage(null);
+            }
+        };
+        if (enlargedImage) {
+            window.addEventListener('keydown', handleEsc);
+        }
+        return () => {
+            window.removeEventListener('keydown', handleEsc);
+        };
+    }, [enlargedImage]);
 
     const handleFormSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setFormStatus('submitting');
         setErrorMessage(null);
 
-        const formData = new FormData(e.currentTarget);
+        const formElement = e.currentTarget;
+        const formData = new FormData(formElement);
+
+        // POPRAWKA: Bezpieczne typowanie danych wejściowych z formularza
         const data = {
-            name: formData.get('name'),
-            phone: formData.get('phone'),
-            email: formData.get('email'),
-            message: formData.get('message'),
+            name: String(formData.get('name') ?? ''),
+            phone: String(formData.get('phone') ?? ''),
+            email: String(formData.get('email') ?? ''),
+            message: String(formData.get('message') ?? ''),
         };
 
-        // Sprawdzamy stan opcjonalnego checkboxa zgody na newsletter
-        const wantsNewsletter = formData.get('newsletterConsent') === 'on';
+        const newsletterCheckbox = formElement.querySelector('#newsletterConsent') as HTMLInputElement | null;
+        const wantsNewsletter = newsletterCheckbox ? newsletterCheckbox.checked : false;
 
         try {
-            // =====================================================================
-            // 1. KROK: Wysyłka tradycyjnej wiadomości formularza kontaktowego
-            // =====================================================================
-            const response = await fetch('http://localhost:3000/api/contact', {
+            const contactPromise = fetch(`${API_URL}/api/contact`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
             });
 
-            if (response.ok) {
+            const newsletterPromise = wantsNewsletter && data.email
+                ? fetch(`${API_URL}/api/newsletter`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: data.email }),
+                })
+                : Promise.resolve(null);
 
-                // =====================================================================
-                // 2. KROK (UJEDNOLICONY): Jeśli zaznaczono zgodę, zapisujemy do MailerLite
-                // =====================================================================
-                if (wantsNewsletter && data.email) {
-                    try {
-                        await fetch('http://localhost:3000/api/newsletter', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ email: data.email })
-                        });
-                    } catch (mlErr) {
-                        console.error('Błąd zapisu do newslettera:', mlErr);
-                    }
+            // Równoległa wysyłka (nie zawiesza interfejsu użytkownika)
+            const [contactResult, newsletterResult] = await Promise.allSettled([
+                contactPromise,
+                newsletterPromise
+            ]);
+
+            if (contactResult.status === 'fulfilled') {
+                const response = contactResult.value;
+                const resultData = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    // Przechwycenie błędu biznesowego bezpośrednio z Twojego nowego backendu
+                    throw new Error(resultData.error || 'Błąd serwera podczas wysyłania formularza');
                 }
-                // =====================================================================
-
-                setFormStatus('success');
-                (e.target as HTMLFormElement).reset();
-                setTimeout(() => setFormStatus('idle'), TIMEOUTS.FORM_SUCCESS_RESET);
             } else {
-                console.error('Błąd serwera podczas wysyłania');
-                setErrorMessage('Wystąpił problem z serwerem. Prosimy o kontakt telefoniczny.');
-                setFormStatus('idle');
+                throw new Error('Błąd połączenia z serwerem. Spróbuj ponownie później.');
             }
+
+            if (newsletterResult.status === 'fulfilled' && newsletterResult.value) {
+                const res = newsletterResult.value;
+                if (!res.ok) {
+                    console.error('Błąd zapisu do newslettera');
+                }
+            }
+
+            setFormStatus('success');
+            formElement.reset(); // POPRAWKA: Bezpieczne resetowanie przez currentTarget
+
+            timeoutRef.current = window.setTimeout(() => {
+                setFormStatus('idle');
+            }, TIMEOUTS.FORM_SUCCESS_RESET);
+
         } catch (error) {
-            console.error('Błąd połączenia:', error);
-            setErrorMessage('Brak połączenia z serwerem. Prosimy o kontakt telefoniczny.');
+            console.error('Błąd formularza kontaktowego:', error);
             setFormStatus('idle');
+
+            // POPRAWKA: Eliminacja błędu ESLint "Unexpected any" za pomocą sprawdzenia instancji
+            const errMessage = error instanceof Error
+                ? error.message
+                : 'Wystąpił nieoczekiwany błąd. Spróbuj ponownie.';
+
+            setErrorMessage(errMessage);
         }
     };
 

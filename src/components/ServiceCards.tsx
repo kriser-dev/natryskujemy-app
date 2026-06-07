@@ -19,6 +19,9 @@ import imgUsluga2 from '../assets/usluga-malowanie.webp';
 import imgUsluga3 from '../assets/usluga-gladzie.webp';
 import imgUsluga4 from '../assets/usluga-posadzki.webp';
 
+// Dynamiczny adres URL z .env (zapasowo localhost)
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 // --- MINI-SEKCJA PRZEJŚCIA DO FORMULARZA ---
 const QuickSurveyForm = ({serviceName}: { serviceName: string, placeholder?: string }) => {
     // 1. Pobieramy funkcję nawigacji z Twojego globalnego kontekstu (tak samo jak w HomePage)
@@ -111,10 +114,9 @@ const BaseServiceCard = (props: BaseServiceCardProps) => {
             // =====================================================================
             // 1.  Wysyłka e-maila do serwera (i dalej do MailerLite)
             // =====================================================================
-            const emailResponse = await fetch('http://localhost:3000/api/newsletter', {
+            const emailResponse = await fetch(`${API_URL}/api/newsletter`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                // Zakładam, że Twój stan przechowujący wpisany e-mail to 'csEmail'
                 body: JSON.stringify({email: csEmail})
             });
 

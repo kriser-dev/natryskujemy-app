@@ -3,7 +3,7 @@ import type {FAQItemData, Opinion, Project} from './types';
 export const faqsData: FAQItemData[] = [
     {
         q: "Jak długo trwa wykonanie hydroizolacji dachu?",
-        a: "Większość standardowych dachów domów jednorodzinnych zabezpieczamy w 1-2 dni. W przypadku dużych hal przemysłowych czas realizacji zależy od metrażu, ale dzięki metodzie natryskowej jest on zaledwie ułamkiem tego, co przy użyciu tradycyjnej papy termozgrzewalnej."
+        a: "Większość standardowych dachów domów jednorodzinnych zabezpieczamy w 3-4 dni. W przypadku dużych hal przemysłowych czas realizacji zależy od metrażu, ale dzięki metodzie natryskowej jest on zaledwie ułamkiem tego, co przy użyciu tradycyjnej papy termozgrzewalnej."
     },
     {
         q: "Czy dajecie gwarancję na szczelność dachu?",

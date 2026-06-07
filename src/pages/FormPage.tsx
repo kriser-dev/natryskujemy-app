@@ -13,6 +13,9 @@ import {
 } from 'lucide-react';
 import {useAppContext} from '../context/useAppContext';
 
+// Dynamiczny adres URL z .env (zapasowo localhost)
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 export default function FormPage() {
     const {navigateTo} = useAppContext();
     const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -57,8 +60,8 @@ export default function FormPage() {
         const wantsNewsletter = newsletterCheckbox ? newsletterCheckbox.checked : false;
 
         try {
-            // Strzał do Twojego gotowego serwera node.js
-            const response = await fetch('http://localhost:3000/api/contact', {
+            // Strzał do gotowego serwera node.js
+            const response = await fetch(`${API_URL}/api/contact`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data),
@@ -69,7 +72,7 @@ export default function FormPage() {
                 // --- NOWE 2: Jeśli klient zaznaczył checkbox, zapisujemy go do MailerLite ---
                 if (wantsNewsletter && email) {
                     try {
-                        await fetch('http://localhost:3000/api/newsletter', {
+                        await fetch(`${API_URL}/api/newsletter`, {
                             method: 'POST',
                             headers: {'Content-Type': 'application/json'},
                             body: JSON.stringify({email: email})
@@ -204,7 +207,7 @@ export default function FormPage() {
                                         (m²)</label>
                                     <div className="relative">
                                         <input
-                                            type="text"
+                                            type="number"
                                             required
                                             placeholder="np. 150"
                                             value={area}
